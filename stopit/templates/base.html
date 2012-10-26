@@ -6,6 +6,8 @@
 	<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 	<title>StopIt: Real-Time Public Transit</title>
 	
+	<link rel="stylesheet" type="text/css" href="/media/css/main.css">
+	
 	<!-- iphone meta -->
 	<meta name="apple-mobile-web-app-capable" content="yes">
 	<meta name="apple-mobile-web-app-status-bar-style" content="black">
@@ -21,7 +23,7 @@
 <body>
   <div data-role="page" data-add-back-btn="true">
     <div data-role="header" data-theme="b">
-  	  <h1>{% block title %}{% endblock %}</h1>
+  	  {% block header %}{% endblock %}
   	</div>
   	
   	<div data-role="content">	

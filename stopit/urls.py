@@ -1,5 +1,6 @@
 from django.conf.urls import patterns, include, url
 from transit.views import index, stop
+from django.conf import settings
 
 # Uncomment the next two lines to enable the admin:
 # from django.contrib import admin
@@ -21,3 +22,10 @@ urlpatterns = patterns('',
     url(r'^route/', 'transit.views.route'),
     url(r'^route_map/', 'transit.views.route_map'),
 )
+
+# Development AND Production are using media files
+urlpatterns = patterns('',
+    url(r'^media/(?P<path>.*)$', 'django.views.static.serve',
+        {'document_root': settings.MEDIA_ROOT, 'show_indexes': True}),
+    url(r'', include('django.contrib.staticfiles.urls')),
+) + urlpatterns
