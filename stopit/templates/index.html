@@ -15,7 +15,7 @@ $("body").ready(function() {
   $("#search_instruction_popup").popup({ history: false });
   
   var left = ($(window).width() - $("#search_instruction_popup").width())/2;
-  $("#search_instruction_popup").css("left", left);
+ // $("#search_instruction_popup").css("left", left);
 });
 </script>
 {% endblock %}
@@ -29,7 +29,7 @@ $("body").ready(function() {
 
 <div data-role="popup" id="search_instruction_popup" class="ui-content" 
   data-theme="e">
-	<a href="#" onclick="$('#popup').popup('close');" data-role="button" 
+	<a href="#" onclick="$('#search_instruction_popup').popup('close');" data-role="button" 
 	  data-theme="a" data-icon="delete" data-iconpos="notext" class="ui-btn-right">
 	  Close
 	</a>
