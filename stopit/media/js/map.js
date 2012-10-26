@@ -39,6 +39,8 @@ MapModule.prototype.fetchAndshowStopsInArea = function() {
   
     this.displayStopsOnMap(stopArray);
     this.alreadyDisplayed = true;
+    
+    $("#stop_search_text").html = "Redo Search In This Area";
   }
 }
 
