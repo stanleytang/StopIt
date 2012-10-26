@@ -20,7 +20,9 @@ MapModule.prototype.fetchAndShowStopsInArea = function() {
     text: "Searching..."
   });
   
-  if (!this.alreadyDisplayed) { // temp hack
+  if (!this.alreadyDisplayed) { // temp hack - eventually, want to delete
+    // all the markers and info windows and redisplay with new ones
+    
     /****** TEMPORARY STOPS DUMMY DATA ********/
     
     var obj = this;
