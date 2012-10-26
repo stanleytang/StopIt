@@ -90,8 +90,7 @@ window.plebeosaur = window.plebeosaur || {
 			useragent = navigator.userAgent;
 
 		// set the map canvas's height/width (Google Maps needs inline height/width)
-		var height = $(window).height() - $("div[data-role='header']").height() -
-		  $("div[data-role='footer']").height();
+		var height = $(window).height() - $("div[data-role='header']").height() + 60;
 		mapCanvas.style.width = '100%';
 		mapCanvas.style.height = height + 'px';
 
@@ -127,7 +126,7 @@ $("body").ready(function() {
 {% block content %}
 <div id="map_canvas"></div>
 
-<div data-role="footer">
+<div data-role="footer" data-position="fixed">
   <div class="ui-grid-solo">
     <a href="/stop/" data-role="button" data-inline="false" data-theme="c"
       data-corners="false">
