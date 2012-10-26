@@ -11,6 +11,11 @@
 var mapModule;
 $("body").ready(function() {
   mapModule = new MapModule("map_canvas");
+  $("#search_instruction_popup").popup("open");
+  $("#search_instruction_popup").popup({ history: false });
+  
+  var left = ($(window).width() - $("#search_instruction_popup").width())/2;
+  $("#search_instruction_popup").css("left", left);
 });
 </script>
 {% endblock %}
@@ -22,11 +27,22 @@ $("body").ready(function() {
 {% block content %}
 <div id="map_canvas"></div>
 
+<div data-role="popup" id="search_instruction_popup" class="ui-content" 
+  data-theme="e">
+	<a href="#" onclick="$('#popup').popup('close');" data-role="button" 
+	  data-theme="a" data-icon="delete" data-iconpos="notext" class="ui-btn-right">
+	  Close
+	</a>
+	Drag the map and tap the search button below to find transit stops
+	in the map region
+</div>
+
 <div data-role="footer" data-position="fixed" data-tap-toggle="false">
   <div class="ui-grid-solo">
     <a href="#" data-role="button" data-inline="false" data-theme="c"
-      data-corners="false" onclick="mapModule.fetchAndshowStopsInArea();">
-      <span id="stop_search_text">Search Transit Stops In This Area</span>
+      data-corners="false" onclick="mapModule.fetchAndShowStopsInArea();"
+      id="bus_search_button">
+      <span id="stops_search_text">Search Transit Stops In This Area</span>
     </a>
   </div>
 </div>

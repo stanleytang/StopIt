@@ -14,33 +14,55 @@ function MapModule(id) {
   this.trackUserLocation();
 }
 
-MapModule.prototype.fetchAndshowStopsInArea = function() {
+MapModule.prototype.fetchAndShowStopsInArea = function() {
+  $.mobile.loading('show', {
+    textVisible: true,
+    text: "Searching..."
+  });
+  
   if (!this.alreadyDisplayed) { // temp hack
     /****** TEMPORARY STOPS DUMMY DATA ********/
-    var stop1 = {
-      title: "Palo Alto Station",
-      latitude: 37.4419,
-      longitude: -122.1649,
-    };
-  
-    var stop2 = {
-      title: "The Oval",
-      latitude: 37.4290,
-      longitude: -122.1706,
-    };
-  
-    var stop3 = {
-      title: "Vaden Health Center",
-      latitude: 37.4220,
-      longitude: -122.1624,
-    };
-  
-    var stopArray = [stop1, stop2, stop3];
-  
-    this.displayStopsOnMap(stopArray);
-    this.alreadyDisplayed = true;
     
-    $("#stop_search_text").html() = "Redo Search In This Area";
+    var obj = this;
+    
+    window.setTimeout(function () {
+      $.mobile.loading('hide');
+    
+      var stop1 = {
+        title: "Palo Alto Station",
+        latitude: 37.4419,
+        longitude: -122.1649,
+      };
+  
+      var stop2 = {
+        title: "The Oval",
+        latitude: 37.4290,
+        longitude: -122.1706,
+      };
+  
+      var stop3 = {
+        title: "Vaden Health Center",
+        latitude: 37.4220,
+        longitude: -122.1624,
+      };
+      
+      var stop4 = {
+        title: "Galvez Street",
+        latitude: 37.4290,
+        longitude: -122.1650,
+      };
+  
+      var stopArray = [stop1, stop2, stop3, stop4];
+  
+      obj.displayStopsOnMap(stopArray);
+      obj.alreadyDisplayed = true;
+    
+      $("#stops_search_text").text("Redo Search In This Area");
+    }, 1000);
+  } else {
+    window.setTimeout(function() {
+      $.mobile.loading('hide');
+    }, 500);
   }
 }
 

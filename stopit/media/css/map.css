@@ -7,6 +7,11 @@
   height: 100%;
 }
 
+#search_instruction_popup {
+  position: fixed;
+  bottom: 60px;
+}
+
 /* --------------------------------
    Current location "pulsating" dot
    -------------------------------- */
