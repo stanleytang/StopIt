@@ -48,33 +48,32 @@ window.plebeosaur = window.plebeosaur || {
 						visible: true
 					});
 					
+					// center map view on every pass
+  				map.setCenter( myLatLng );
 					
-					// add markers - test
-            var mark = new google.maps.LatLng(position.coords.latitude+0.01,
-                                              position.coords.longitude+0.01);
-            var marker = new google.maps.Marker({
-              position: mark,
-              map: map,
-              title:"Hello World!"
-            });
+					/* add markers - TEST. Remove below code once cleaned up */
+          var mark = new google.maps.LatLng(position.coords.latitude+0.01,
+                                            position.coords.longitude+0.01);
+          var marker = new google.maps.Marker({
+            position: mark,
+            map: map,
+            title:"Hello World!"
+          });
 
-            var infoWindow = new google.maps.InfoWindow();
+          var infoWindow = new google.maps.InfoWindow();
 
-            // bug - this will duplicate
-            //http://jquery-ui-map.googlecode.com/svn/trunk/demos/jquery-google-maps-mobile.html
-            google.maps.event.addListener(marker, 'click', function() {
-               var markerContent = "<a href='/stop/'>bus stop</a>";
-               infoWindow.setContent(markerContent);
-               infoWindow.open(map, this);
-            });
+          //http://jquery-ui-map.googlecode.com/svn/trunk/demos/jquery-google-maps-mobile.html
+          google.maps.event.addListener(marker, 'click', function() {
+             var markerContent = "<a href='/stop/'>bus stop</a>";
+             infoWindow.setContent(markerContent);
+             infoWindow.open(map, this);
+             infoWindow.setPixelOffset(0, 0);
+          });
 				
 				// just change marker position on subsequent passes
 				} else {
 					myMarker.setPosition( myLatLng );
 				}
-
-				// center map view on every pass
-				map.setCenter( myLatLng );
 			},
 			handleError = function( error ) {
 				var errorMessage = [ 
