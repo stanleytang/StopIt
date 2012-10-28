@@ -6,7 +6,11 @@ function MapModule(id) {
       zoom: 14,
       // initially center on Stanford
       center: new google.maps.LatLng(37.4225, -122.1653),
-      mapTypeId: google.maps.MapTypeId.ROADMAP
+      mapTypeId: google.maps.MapTypeId.ROADMAP,
+      zoomControl: true,
+      zoomControlOptions: {
+         style: google.maps.ZoomControlStyle.SMALL
+      }
     }
   );
   
