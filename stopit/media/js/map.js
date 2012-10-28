@@ -9,7 +9,7 @@ function MapModule(id) {
       mapTypeId: google.maps.MapTypeId.ROADMAP,
       zoomControl: true,
       zoomControlOptions: {
-         style: google.maps.ZoomControlStyle.SMALL
+         style: google.maps.ZoomControlStyle.LARGE
       }
     }
   );
@@ -186,6 +186,8 @@ MapModule.prototype.displayStopsOnMap = function(stopsInfoArray) {
       stopInfoWindow.open(this.map, this);
     });
   }
+  
+  // if no results, show no results popup
 }
 
 MapModule.prototype.clearStopsOnMap = function() {
