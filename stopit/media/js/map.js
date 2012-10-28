@@ -72,10 +72,20 @@ MapModule.prototype.fetchAndShowStopsInArea = function() {
   }
 }
 
+// Set the map canvas's height/width (Google Maps needs inline height/width)
 MapModule.prototype.buildMap = function() {
-  // Set the map canvas's height/width (Google Maps needs inline height/width)
-	var height = $(window).height() - $("div[data-role='header']").height() -
-	  $("div[data-role='footer']").height();
+  
+	// In app mode
+	if (("standalone" in window.navigator) && !window.navigator.standalone) {
+    var height = $(window).height() - $("div[data-role='header']").height() -
+  	  $("div[data-role='footer']").height();
+  
+  // Regular web browser
+  } else {
+   	var height = $(window).height() - $("div[data-role='header']").height() -
+  	  $("div[data-role='footer']").height() + 60; 
+  }	  
+	  
 	this.mapCanvas.style.width = '100%';
 	this.mapCanvas.style.height = height + 'px';
 }
