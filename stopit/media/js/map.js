@@ -74,16 +74,15 @@ MapModule.prototype.fetchAndShowStopsInArea = function() {
 
 // Set the map canvas's height/width (Google Maps needs inline height/width)
 MapModule.prototype.buildMap = function() {
-  
-	// In app mode
+	// Regular web browser
 	if (("standalone" in window.navigator) && !window.navigator.standalone) {
     var height = $(window).height() - $("div[data-role='header']").height() -
-  	  $("div[data-role='footer']").height();
+  	  $("div[data-role='footer']").height() + 60;
   
-  // Regular web browser
+  // In app
   } else {
-   	var height = $(window).height() - $("div[data-role='header']").height() -
-  	  $("div[data-role='footer']").height() + 60; 
+	  var height = $(window).height() - $("div[data-role='header']").height() -
+  	  $("div[data-role='footer']").height();
   }	  
 	  
 	this.mapCanvas.style.width = '100%';
