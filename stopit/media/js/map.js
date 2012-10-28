@@ -74,7 +74,7 @@ MapModule.prototype.fetchAndShowStopsInArea = function() {
 
 MapModule.prototype.buildMap = function() {
   // Set the map canvas's height/width (Google Maps needs inline height/width)
-	var height = $(window).height() - $("div[data-role='header']").height() + 60;
+	var height = $(window).height() - $("div[data-role='header']").height();
 	this.mapCanvas.style.width = '100%';
 	this.mapCanvas.style.height = height + 'px';
 }
