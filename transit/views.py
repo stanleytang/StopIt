@@ -3,7 +3,7 @@ from django.shortcuts import render
 def index(request):
     return render(request, "index.html", locals())
     
-def stop(request):
+def stop(request):    
     return render(request, "stop.html", locals())
     
 def route(request):

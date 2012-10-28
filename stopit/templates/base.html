@@ -15,20 +15,15 @@
 	
 	<!-- jquery mobile -->
 	<link rel="stylesheet" href="http://code.jquery.com/mobile/1.2.0/jquery.mobile-1.2.0.min.css" />
-  	<script src="http://code.jquery.com/jquery-1.8.2.min.js"></script>
-	<!-- jquery mobile global defaults set -->
+  <script src="http://code.jquery.com/jquery-1.8.2.min.js"></script>
+  <script src="http://code.jquery.com/mobile/1.2.0/jquery.mobile-1.2.0.min.js"></script>
+  
+  <!-- jquery mobile global defaults set -->
 	<script>
 	$(document).bind("mobileinit", function(){
-<<<<<<< HEAD
-	    $.mobile.defaultPageTransition = slide;
-=======
-	  $.extend(  $.mobile , {
-	    defaultPageTransition: slide
-	  });
->>>>>>> 93c7e15f67e726ed676dc9ea5878f5842296d43b
+	  $.mobile.defaultPageTransition = slide;
 	});
 	</script>
-  	<script src="http://code.jquery.com/mobile/1.2.0/jquery.mobile-1.2.0.min.js"></script>
   
   {% block extra_head %}{% endblock %}
 </head>
@@ -38,7 +33,7 @@
   	  {% block header %}{% endblock %}
   	</div>
   	
-  	<div data-role="content">	
+  	<div data-role="content" id="{% block content_id %}{% endblock %}">	
   		{% block content %}{% endblock %}
   	</div>
   	
