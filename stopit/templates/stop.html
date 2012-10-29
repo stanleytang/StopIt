@@ -2,7 +2,15 @@
 
 {% block extra_head %}
 <script type="text/javascript">
-  
+//Google streetview image panorama
+var svImgSize = $(window).width();
+svImgSize += "x" + 0.75 * svImgSize;
+var svLocation = "37.424032,-122.165806"
+var svHeading = 290; //degree to point camera, with 0/360 being North
+var svFov = 100; //field of view, default is 90
+var svURL = "http://maps.googlemaps.com/maps/api/streetview?size="+svImgSize+"&location="+svLocation+"&heading="+svHeading+"&fov="+fov+"&sensor=false";
+document.getElementById('streetview-image').src = "TEST2";
+$("#subtext").text("hello");
 </script>
 {% endblock %}
 
@@ -11,9 +19,10 @@
 {% endblock %}
 
 {% block content %}
-<p>This page will have details about the bus stop (location) and real time data
+<p>This page will have details about the bus stop (location) and real time data!!
 on the bus schedules</p>
-
+<div id="subtext">&nbsp</div>
+<img id="streetview-image" src="DEFAULT_IMAGE" />
 <ul data-role="listview" class="ui-content">
 	<li><a href="/route/">
 			<h3>Line A</h3>
