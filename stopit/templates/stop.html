@@ -1,17 +1,7 @@
 {% extends "base.html" %}
 
 {% block extra_head %}
-<script type="text/javascript">
-//Google streetview image panorama
-var svImgSize = $(window).width();
-svImgSize += "x" + 0.75 * svImgSize;
-var svLocation = "37.424032,-122.165806"
-var svHeading = 290; //degree to point camera, with 0/360 being North
-var svFov = 100; //field of view, default is 90
-var svURL = "http://maps.googlemaps.com/maps/api/streetview?size="+svImgSize+"&location="+svLocation+"&heading="+svHeading+"&fov="+fov+"&sensor=false";
-document.getElementById('streetview-image').src = "TEST2";
-$("#subtext").text("hello");
-</script>
+
 {% endblock %}
 
 {% block header %}
@@ -19,9 +9,6 @@ $("#subtext").text("hello");
 {% endblock %}
 
 {% block content %}
-<p>This page will have details about the bus stop (location) and real time data!!
-on the bus schedules</p>
-<div id="subtext">&nbsp</div>
 <img id="streetview-image" src="DEFAULT_IMAGE" />
 <ul data-role="listview" class="ui-content">
 	<li><a href="/route/">
@@ -32,4 +19,18 @@ on the bus schedules</p>
 	<li><a href="/route/">Line C</a></li>
 </ul>
 
+{% endblock %}
+
+{% block javascript %}
+<script type="text/javascript">
+//Google streetview image panorama
+var svImgSize = $(window).width();
+svImgSize += "x" + Math.round(0.75 * svImgSize); // this cant be a dot... round the numbers
+var svLocation = "37.424032,-122.165806"
+var svHeading = 290; //degree to point camera, with 0/360 being North
+var svFov = 100; //field of view, default is 90
+var svURL = "http://maps.googleapis.com/maps/api/streetview?size="+svImgSize+"&location="+svLocation+"&heading="+svHeading+"&fov="+svFov+"&sensor=false";
+// $("#streetview-image")[0].src = svURL;
+document.getElementById('streetview-image').src = svURL;
+</script>
 {% endblock %}
