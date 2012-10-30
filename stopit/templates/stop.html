@@ -7,7 +7,7 @@
 {% endblock %}
 
 {% block header %}
-<h1>Bus Stop</h1>
+<h1>{{ stop.name }}</h1>
 {% endblock %}
 
 {% block content %}
@@ -15,12 +15,14 @@
 on the bus schedules</p>
 
 <ul data-role="listview" class="ui-content">
-	<li><a href="/route/">
-			<h3>Line A</h3>
-			<p>From the Oval to your Mom&#8217s House</p>
-		</a></li>
-	<li><a href="/route/">Line B</a></li>
-	<li><a href="/route/">Line C</a></li>
+  {% for route in routes %}
+	<li>
+	  <a href="/route/?id={{ route.id }}">
+			<h3>{{ route.name }}</h3>
+			<p>To: {{ route.destination }}</p>
+		</a>
+	</li>
+	{% endfor %}
 </ul>
 
 {% endblock %}

@@ -38,24 +38,28 @@ MapModule.prototype.fetchAndShowStopsInArea = function() {
         title: "Palo Alto Station",
         latitude: 37.4419,
         longitude: -122.1649,
+        id: 1,
       };
   
       var stop2 = {
         title: "The Oval",
         latitude: 37.4290,
         longitude: -122.1706,
+        id: 2,
       };
   
       var stop3 = {
         title: "Vaden Health Center",
         latitude: 37.4220,
         longitude: -122.1624,
+        id: 3,
       };
       
       var stop4 = {
         title: "Galvez Street",
         latitude: 37.4290,
         longitude: -122.1650,
+        id: 4,
       };
   
       var stopArray = [stop1, stop2, stop3, stop4];
@@ -175,19 +179,22 @@ MapModule.prototype.displayStopsOnMap = function(stopsInfoArray) {
     var stopMarker = new google.maps.Marker({
       position: stopLatLng,
       map: this.map,
-      title: stop.title
+      title: stop.title,
+      id: stop.id
     });
+    
+    var busstop = stop;
 
     // Create popup window
     var stopInfoWindow = new google.maps.InfoWindow();
     google.maps.event.addListener(stopMarker, 'click', function() {
-      var content = "<a href='/stop/'>" + this.title + "</a>";
+      var content = "<a href='/stop/?id=" + this.id + "'>" + this.title + "</a>";
       stopInfoWindow.setContent(content);
       stopInfoWindow.open(this.map, this);
     });
   }
   
-  // if no results, show no results popup
+  // if no results, show no results popup (TODO)
 }
 
 MapModule.prototype.clearStopsOnMap = function() {
