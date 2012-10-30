@@ -18,6 +18,7 @@ urlpatterns = patterns('',
     # url(r'^admin/', include(admin.site.urls)),
     
     url(r'^$', 'transit.views.index'),
+    url(r'^stop_map_search/', 'transit.views.stop_map_search'),
     url(r'^stop/', 'transit.views.stop'),
     url(r'^route/', 'transit.views.route'),
     url(r'^route_map/', 'transit.views.route_map'),

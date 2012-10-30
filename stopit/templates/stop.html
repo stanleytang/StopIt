@@ -41,7 +41,7 @@
     svImgSize += "x" + 180;
     var svLocation = "{{ stop.latitude }},{{ stop.longitude }}"
     var svHeading = 290; // degree to point camera, with 0/360 being North
-    var svFov = 120; // field of view, default is 90
+    var svFov = 100; // field of view, default is 90
     var svURL = "http://maps.googleapis.com/maps/api/streetview?size=" + 
       svImgSize + "&location=" + svLocation + "&heading=" + svHeading + "&fov=" 
       + svFov + "&sensor=false";
@@ -59,6 +59,8 @@
       $("#stop_distance_from_location").text(
         distance.toFixed(1) + " miles away"
       );
+    }, function(error) {
+      $("#stop_distance_from_location").remove();
     });
     
   </script>

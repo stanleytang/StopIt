@@ -1,4 +1,6 @@
 from django.shortcuts import render
+from django.utils import simplejson
+from django.http import HttpResponse
 
 def index(request):
     """
@@ -11,16 +13,49 @@ def stop_map_search(request):
     AJAX call that returns all stops in map region
     
     Request:
-        -lat_one
-        -long_one
-        -lat_two
-        -long_two
+        -lat1
+        -lon1
+        -lat2
+        -lon2
     
     Return (JSON object):
         -stops: [{id, name, longitude, latitude}]
     """
-    return None
     
+    # dummy data
+    
+    stop1 = {
+        "name": "Palo Alto Station",
+        "latitude": 37.4419,
+        "longitude": -122.1649,
+        "id": 1,
+    }
+    
+    stop2 = {
+        "name": "The Oval",
+        "latitude": 37.4290,
+        "longitude": -122.1706,
+        "id": 2,
+    }
+    
+    stop3 = {
+        "name": "Vaden Health Center",
+        "latitude": 37.4220,
+        "longitude": -122.1624,
+        "id": 3,
+    }
+    
+    stop4 = {
+        "name": "Galvez Street",
+        "latitude": 37.4290,
+        "longitude": -122.1650,
+        "id": 4,
+    }
+    
+    json = simplejson.dumps({"stops": [stop1, stop2, stop3, stop4]})
+  
+    return HttpResponse(simplejson.dumps(json),
+        mimetype='application/json')
     
 def stop(request):
     """

@@ -1,4 +1,6 @@
 function MapModule(id) {
+  this.markersArray = [];
+  
   this.mapCanvas = document.getElementById(id);
   this.map = new google.maps.Map(
     this.mapCanvas,
@@ -21,58 +23,66 @@ function MapModule(id) {
 MapModule.prototype.fetchAndShowStopsInArea = function() {
   $.mobile.loading('show', {
     textVisible: true,
+    textonly: false,
     text: "Searching..."
   });
   
-  if (!this.alreadyDisplayed) { // temp hack - eventually, want to delete
-    // all the markers and info windows and redisplay with new ones
-    
-    /****** TEMPORARY STOPS DUMMY DATA ********/
-    
-    var obj = this;
-    
-    window.setTimeout(function () {
-      $.mobile.loading('hide');
-    
-      var stop1 = {
-        title: "Palo Alto Station",
-        latitude: 37.4419,
-        longitude: -122.1649,
-        id: 1,
-      };
-  
-      var stop2 = {
-        title: "The Oval",
-        latitude: 37.4290,
-        longitude: -122.1706,
-        id: 2,
-      };
-  
-      var stop3 = {
-        title: "Vaden Health Center",
-        latitude: 37.4220,
-        longitude: -122.1624,
-        id: 3,
-      };
-      
-      var stop4 = {
-        title: "Galvez Street",
-        latitude: 37.4290,
-        longitude: -122.1650,
-        id: 4,
-      };
-  
-      var stopArray = [stop1, stop2, stop3, stop4];
-  
-      obj.displayStopsOnMap(stopArray);
-      obj.alreadyDisplayed = true;
-      $("#stop_search_text").text("Redo Search In This Area");
-    }, 1000);
+  if (this.alreadyDisplayed) { 
+    this.clearStopsOnMap();
   } else {
+    this.alreadyDisplayed = true;
+    $("#stop_search_text").text("Redo Search In This Area");
+  }
+  
+  var bounds = this.map.getBounds();
+  var swBounds = bounds.getSouthWest();
+  var neBounds = bounds.getNorthEast();
+  
+  var lat1 = swBounds.Ya;
+  var lon1 = swBounds.Za;
+  
+  var lat2 = neBounds.Ya;
+  var lon2 = neBounds.Za; 
+
+  var request = $.ajax({
+    url: "/stop_map_search/?lat1=" + lat1 +"&lon1=" + lon1 + "&lat2=" + lat2 +
+      "&lon2=" + lon2
+  });
+  
+  var obj = this;
+
+  request.done(function(msg) {
+    $.mobile.loading('hide');
+     
+    var json = JSON.parse(msg);
+    
+    // If empty, show no results found message
+    if (!json || !json["stops"]) {
+      $.mobile.loading('show', {
+        textonly: true,
+        textVisible: true,
+        text: "No stops found in this area"
+      });
+       
+      window.setTimeout(function() {
+        $.mobile.loading('hide');
+      }, 3000);
+    } else {
+      obj.displayStopsOnMap(json["stops"]);
+    }
+  });
+  
+  request.fail(function(jqXHR, textStatus) {    
+    $.mobile.loading('show', {
+      textonly: true,
+      textVisible: true,
+      text: "Error fetching stops. Please try again"
+    });
+     
     window.setTimeout(function() {
       $.mobile.loading('hide');
-    }, 500);
-  }
+    }, 3000);
+  });
 }
 
 // Set the map canvas's height/width (Google Maps needs inline height/width)
@@ -166,24 +176,21 @@ MapModule.prototype.trackUserLocation = function() {
 	}
 }
 
-MapModule.prototype.displayStopsOnMap = function(stopsInfoArray) {
-  // Consider using 
-  // http://jquery-ui-map.googlecode.com/svn/trunk/demos/jquery-google-maps-mobile.html
-  
+MapModule.prototype.displayStopsOnMap = function(stopsInfoArray) {  
   for (index in stopsInfoArray) {
     var stop = stopsInfoArray[index];
     var stopLatLng = new google.maps.LatLng(stop.latitude, stop.longitude);
-    
+
     // Create marker
     var stopMarker = new google.maps.Marker({
       position: stopLatLng,
       map: this.map,
-      title: stop.title,
+      title: stop.name,
       id: stop.id
     });
-    
-    var busstop = stop;
 
+    this.markersArray.push(stopMarker);
+    
     // Create popup window
     var stopInfoWindow = new google.maps.InfoWindow();
     google.maps.event.addListener(stopMarker, 'click', function() {
@@ -192,10 +199,13 @@ MapModule.prototype.displayStopsOnMap = function(stopsInfoArray) {
       stopInfoWindow.open(this.map, this);
     });
   }
-  
-  // if no results, show no results popup (TODO)
 }
 
 MapModule.prototype.clearStopsOnMap = function() {
-  // https://developers.google.com/maps/documentation/javascript/overlays#RemovingOverlays
+  if (this.markersArray) {
+    for (i in this.markersArray) {
+      this.markersArray[i].setMap(null);
+    }
+    this.markersArray.length = 0;
+  }
 }
