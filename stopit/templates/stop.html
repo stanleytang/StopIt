@@ -1,11 +1,10 @@
 {% extends "base.html" %}
 
 {% block extra_head %}
-
 {% endblock %}
 
 {% block body %}
-<div data-role="page">
+<div data-role="page" data-back-btn="true" id="stop_page">
   <div data-role="header" data-theme="b">
 	  <h1>{{ stop.name }}</h1>
 	</div>
@@ -24,16 +23,16 @@
     	{% endfor %}
     </ul>
   </div>
+  
+  <script type="text/javascript">
+      //Google streetview image panorama
+      var svImgSize = $(window).width();
+      svImgSize += "x" + 100;
+      var svLocation = "{{ stop.latitude }},{{ stop.longitude }}"
+      var svHeading = 290; //degree to point camera, with 0/360 being North
+      var svFov = 100; //field of view, default is 90
+      var svURL = "http://maps.googleapis.com/maps/api/streetview?size="+svImgSize+"&location="+svLocation+"&heading="+svHeading+"&fov="+svFov+"&sensor=false";
+      document.getElementById('streetview-image').src = svURL;
+  </script>
 </div>
-
-<script type="text/javascript">
-  //Google streetview image panorama
-  var svImgSize = $(window).width();
-  svImgSize += "x" + 100;
-  var svLocation = "{{ stop.latitude }},{{ stop.longitude }}"
-  var svHeading = 290; //degree to point camera, with 0/360 being North
-  var svFov = 100; //field of view, default is 90
-  var svURL = "http://maps.googleapis.com/maps/api/streetview?size="+svImgSize+"&location="+svLocation+"&heading="+svHeading+"&fov="+svFov+"&sensor=false";
-  document.getElementById('streetview-image').src = svURL;
-</script>
 {% endblock %}

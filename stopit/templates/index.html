@@ -9,7 +9,7 @@
 <script type="text/javascript" src="/media/js/map.js"></script>
 <script type="text/javascript">
 var mapModule;
-$("body").ready(function() {
+$(document).bind('pageinit', function() {
   mapModule = new MapModule("map_canvas");
   
   // show popup instructions (TODO)
