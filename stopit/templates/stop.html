@@ -1,9 +1,7 @@
 {% extends "base.html" %}
 
 {% block extra_head %}
-<script type="text/javascript">
-  
-</script>
+
 {% endblock %}
 
 {% block header %}
@@ -11,9 +9,7 @@
 {% endblock %}
 
 {% block content %}
-<p>This page will have details about the bus stop (location) and real time data
-on the bus schedules</p>
-
+<img id="streetview-image" src="DEFAULT_IMAGE" />
 <ul data-role="listview" class="ui-content">
   {% for route in routes %}
 	<li>
@@ -25,4 +21,18 @@ on the bus schedules</p>
 	{% endfor %}
 </ul>
 
+{% endblock %}
+
+{% block javascript %}
+<script type="text/javascript">
+//Google streetview image panorama
+var svImgSize = $(window).width();
+svImgSize += "x" + Math.round(0.75 * svImgSize); // this cant be a dot... round the numbers
+var svLocation = "37.424032,-122.165806"
+var svHeading = 290; //degree to point camera, with 0/360 being North
+var svFov = 100; //field of view, default is 90
+var svURL = "http://maps.googleapis.com/maps/api/streetview?size="+svImgSize+"&location="+svLocation+"&heading="+svHeading+"&fov="+svFov+"&sensor=false";
+// $("#streetview-image")[0].src = svURL;
+document.getElementById('streetview-image').src = svURL;
+</script>
 {% endblock %}
