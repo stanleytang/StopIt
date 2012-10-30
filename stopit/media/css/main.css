@@ -1,0 +1,20 @@
+/* -------------
+   Stop page
+   ------------- */
+   
+#stop_page #cover_photo_container #stop_name {
+  position: absolute;
+  background: rgba(0, 0, 0, 0.5);
+  margin: 10px;
+  padding: 8px;
+}
+
+#stop_page #cover_photo_container #stop_name h2 {
+  margin: 0px;
+  color: white;
+}
+
+#stop_page #cover_photo_container #stop_name #stop_distance_from_location {
+  color: white;
+  margin: 0px;
+}

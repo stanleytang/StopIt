@@ -11,13 +11,13 @@ def stop_map_search(request):
     AJAX call that returns all stops in map region
     
     Request:
-        -min_lat
-        -max_lat
-        -min_long
-        -max_long
+        -lat_one
+        -long_one
+        -lat_two
+        -long_two
     
-    Return (JSON):
-        -stops: [stop]
+    Return (JSON object):
+        -stops: [{id, name, longitude, latitude}]
     """
     return None
     
@@ -28,6 +28,10 @@ def stop(request):
     
     Request:
         -id
+        
+    Return (template objects):
+        -stop: {name, latitude, longitude}
+        -routes: [{id, name, destination, arrival_time, delay_time}]
     """
     stop_id = request.GET.get('id', 1)
     
@@ -58,10 +62,14 @@ def route(request):
     
     Request:
         -id
+        
+    Return (template objects):
+        -route: {id, name, destination}
+        -stops: [{id, name}]
     """
     route_id = request.GET['id']
     
-    # TODO (andy fang) get stop from database
+    # TODO (andy fang) get route from database
     
     # temporary - using dummy data
     
@@ -73,5 +81,12 @@ def route_map(request):
     
     Request:
         -id
+        
+    Return (template objects):
+        -route: {id, name}
+        -start
+        -destination
+        -route_points: [{latitude, longitude}]
+        -bus_points: [{latitude, longitude}]
     """
     return render(request, "route_map.html", locals())
