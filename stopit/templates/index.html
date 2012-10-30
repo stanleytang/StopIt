@@ -12,27 +12,27 @@ var mapModule;
 $("body").ready(function() {
   mapModule = new MapModule("map_canvas");
   
-  // show popup instructions
+  // show popup instructions (TODO)
 });
 </script>
 {% endblock %}
 
-{% block header %}
-<h1>StopIt</h1>
-{% endblock %}
-
-{% block content_id %}map_container{% endblock %}
-
-{% block content %}
-<div id="map_canvas"></div>
-
-<div data-role="footer" data-position="fixed" data-tap-toggle="false">  
-  <div class="ui-grid-solo">
-    <a href="#" data-role="button" data-inline="false" data-theme="c"
-      data-corners="false" onclick="mapModule.fetchAndShowStopsInArea();"
-      id="bus_search_button">
-      <span id="stops_search_text">Search Transit Stops In This Area</span>
-    </a>
+{% block body %}
+<div data-role="page">
+  <div data-role="header" data-theme="b">
+	  <h1>StopIt</h1>
+	</div>
+  
+  <div id="map_canvas"></div>
+  
+  <div data-role="footer" data-position="fixed" data-tap-toggle="false">  
+    <div class="ui-grid-solo">
+      <a href="#" data-role="button" data-inline="false" data-theme="c"
+        data-corners="false" onclick="mapModule.fetchAndShowStopsInArea();"
+        id="stop_search_button">
+        <span id="stop_search_text">Search Transit Stops In This Area</span>
+      </a>
+    </div>
   </div>
 </div>
 {% endblock %}

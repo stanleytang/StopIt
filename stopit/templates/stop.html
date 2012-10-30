@@ -4,35 +4,36 @@
 
 {% endblock %}
 
-{% block header %}
-<h1>{{ stop.name }}</h1>
-{% endblock %}
+{% block body %}
+<div data-role="page">
+  <div data-role="header" data-theme="b">
+	  <h1>{{ stop.name }}</h1>
+	</div>
+	
+	<img id="streetview-image" src="DEFAULT_IMAGE" style="width: 100%"/>
+  
+  <div data-role="content">
+    <ul data-role="listview" class="ui-content">
+      {% for route in routes %}
+    	<li>
+    	  <a href="/route/?id={{ route.id }}">
+    			<h3>{{ route.name }}</h3>
+    			<p>To: {{ route.destination }}</p>
+    		</a>
+    	</li>
+    	{% endfor %}
+    </ul>
+  </div>
+</div>
 
-{% block content %}
-<img id="streetview-image" src="DEFAULT_IMAGE" />
-<ul data-role="listview" class="ui-content">
-  {% for route in routes %}
-	<li>
-	  <a href="/route/?id={{ route.id }}">
-			<h3>{{ route.name }}</h3>
-			<p>To: {{ route.destination }}</p>
-		</a>
-	</li>
-	{% endfor %}
-</ul>
-
-{% endblock %}
-
-{% block javascript %}
 <script type="text/javascript">
-//Google streetview image panorama
-var svImgSize = $(window).width();
-svImgSize += "x" + Math.round(0.75 * svImgSize); // this cant be a dot... round the numbers
-var svLocation = "37.424032,-122.165806"
-var svHeading = 290; //degree to point camera, with 0/360 being North
-var svFov = 100; //field of view, default is 90
-var svURL = "http://maps.googleapis.com/maps/api/streetview?size="+svImgSize+"&location="+svLocation+"&heading="+svHeading+"&fov="+svFov+"&sensor=false";
-// $("#streetview-image")[0].src = svURL;
-document.getElementById('streetview-image').src = svURL;
+  //Google streetview image panorama
+  var svImgSize = $(window).width();
+  svImgSize += "x" + 100;
+  var svLocation = "{{ stop.latitude }},{{ stop.longitude }}"
+  var svHeading = 290; //degree to point camera, with 0/360 being North
+  var svFov = 100; //field of view, default is 90
+  var svURL = "http://maps.googleapis.com/maps/api/streetview?size="+svImgSize+"&location="+svLocation+"&heading="+svHeading+"&fov="+svFov+"&sensor=false";
+  document.getElementById('streetview-image').src = svURL;
 </script>
 {% endblock %}

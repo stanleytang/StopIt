@@ -6,10 +6,16 @@
 </script>
 {% endblock %}
 
-{% block header %}
-<h1>Live map of route a</h1>
-{% endblock %}
-
-{% block content %}
-live map of the route
+{% block body %}
+<div data-role="page">
+  <div data-role="header" data-theme="b">
+	  <h1>Live Map</h1>
+	</div>
+  
+  <div data-role="content">
+    <p>
+      Live map of buses on the route
+    </p>
+  </div>
+</div>
 {% endblock %}

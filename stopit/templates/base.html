@@ -4,7 +4,7 @@
 <html lang="en">
 <head>
 	<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-	<title>StopIt: Real-Time Public Transit</title>
+	<title>StopIt</title>
 	
 	<link rel="stylesheet" type="text/css" href="/media/css/main.css">
 	
@@ -29,16 +29,6 @@
   {% block extra_head %}{% endblock %}
 </head>
 <body>
-  <div data-role="page" data-add-back-btn="true">
-    <div data-role="header" data-theme="b">
-  	  {% block header %}{% endblock %}
-  	  <!-- add home button (TODO) -->
-  	</div>
-  	
-  	<div data-role="content" id="{% block content_id %}{% endblock %}">	
-  		{% block content %}{% endblock %}
-  	</div>
-  	
-  	{% block javascript %}{% endblock %}
+  	{% block body %}{% endblock %}
 </body>
 </html>
