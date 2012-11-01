@@ -12,7 +12,7 @@
   var mapModule;
   $("body").ready(function() {
     mapModule = new MapModule("map_canvas");
-    $('#map_popup_instruction').popup('open');
+   //  $('#map_popup_instruction').popup('open');
   });
 </script>
 {% endblock %}
@@ -25,8 +25,9 @@
 	
   <div id="map_canvas"></div>
   
-  <div data-role="popup" id="map_popup_instruction" data-theme="e">
-    <a href="#" onclick="$('#map_popup_instruction').popup('close');"
+  <div class="ui-content ui-popup ui-overlay-shadow ui-corner-all ui-body-e" 
+    id="map_popup_instruction" data-theme="e">
+    <a href="#" onclick="$('#map_popup_instruction').remove();"
       data-role="button" data-theme="a" data-icon="delete"
       data-iconpos="notext" class="ui-btn-right">Close</a>
   	<p>Drag the map and tap below to search for transit stops in this region.<p>

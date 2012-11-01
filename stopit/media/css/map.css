@@ -11,15 +11,13 @@
    Map instruction popup
    ---------------------- */
 
-#map_popup_instruction-popup {
-  top: auto !important;
-  bottom: 64px !important;
-  position: fixed;
-}
-
 #map_popup_instruction {
   text-align: center;
   padding: 3px 2px 4px 2px;
+  position: fixed;
+  bottom: 64px;
+  left: 10%;
+  right: 10%;
 }
 
 /* --------------------------------

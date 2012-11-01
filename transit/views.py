@@ -20,6 +20,8 @@ def stop_map_search(request):
     
     Return (JSON object):
         -stops: [{id, name, longitude, latitude}]
+        
+    If no stops found, return empty
     """
     
     # dummy data
