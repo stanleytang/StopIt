@@ -26,7 +26,7 @@ def stop_map_search(request):
     (lat2, lon2) represents SW point of map region
     
     Return (JSON object):
-        -stops: [{id, name, longitude, latitude}]
+        -stops: [{id, name, longitude, latitude}]git 
         
     If no stops found, return empty
     """
@@ -57,7 +57,8 @@ def stop(request):
         
     Return (template objects):
         -stop: {name, latitude, longitude}
-        -routes: [{id, name, destination, scheduled_arrival_time, actual_arrival_time, delay_length}]
+        -routes: [{id, name, destination, scheduled_arrival_time, 
+                   actual_arrival_time, delay_length}]
     """
     stop_id = request.GET.get('id', 1)
     
@@ -118,6 +119,18 @@ def route_map(request):
     If no live buses (e.g. it is midnight) return empty
     """
     
-    route = {"id": 1, "name": "Line A"}
+    # dummy data
     
-    return render(request, "route_map.html", {"route": route})
+    # note - we can only have maximum of 10 (including start + destination) route points
+    
+    route = {"id": 1, "name": "Line A"}
+    route_points = [
+        {"latitude": 37.4419, "longitude": -122.1649}, # Palo Alto (start)
+        {"latitude": 37.4290, "longitude": -122.1650}, # Galvez
+        {"latitude": 37.4223, "longitude": -122.1629}, # Vaden
+        {"latitude": 37.4268, "longitude": -122.1814}, # Suites
+        {"latitude": 37.4311, "longitude": -122.1778}, # Med school
+        {"latitude": 37.4419, "longitude": -122.1649}, # Palo Alto (destination)
+    ]
+    
+    return render(request, "route_map.html", {"route": route, "route_points": route_points})
