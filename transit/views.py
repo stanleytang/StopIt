@@ -197,7 +197,6 @@ def route_map(request):
         
     
     # note - we can only have max of 10 (including start + dest) route points
-    
     # route = {"id": 1, "name": "Line A"}
     # route_points = [
     #     {"latitude": 37.4419, "longitude": -122.1649}, # Palo Alto (start)
