@@ -3,17 +3,17 @@
 {% block extra_head %}
 <link rel="stylesheet" type="text/css" href="/media/css/map.css">
 
-<script type="text/javascript"
-  src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBX3kXaqyDwwZuLQpUyTVVBo7pc83S9kTY&sensor=true">
+<script type="text/javascript" 
+  src="https://maps.googleapis.com/maps/api/js?key=
+  AIzaSyBX3kXaqyDwwZuLQpUyTVVBo7pc83S9kTY&sensor=true">
 </script>
 <script type="text/javascript" src="/media/js/map.js"></script>
 <script type="text/javascript">
-var mapModule;
-$("body").ready(function() {
-  mapModule = new MapModule("map_canvas");
-  
-  // show popup instructions (TODO)
-});
+  var mapModule;
+  $("body").ready(function() {
+    mapModule = new MapModule("map_canvas");
+   //  $('#map_popup_instruction').popup('open');
+  });
 </script>
 {% endblock %}
 
@@ -22,12 +22,20 @@ $("body").ready(function() {
   <div data-role="header" data-theme="b">
 	  <h1>StopIt</h1>
 	</div>
-  
+	
   <div id="map_canvas"></div>
+  
+  <div class="ui-content ui-popup ui-overlay-shadow ui-corner-all ui-body-e" 
+    id="map_popup_instruction" data-theme="e">
+    <a href="#" onclick="$('#map_popup_instruction').remove();"
+      data-role="button" data-theme="a" data-icon="delete"
+      data-iconpos="notext" class="ui-btn-right">Close</a>
+  	<p>Drag the map and tap below to search for transit stops in this region.<p>
+  </div>
   
   <div data-role="footer" data-position="fixed" data-tap-toggle="false">  
     <div class="ui-grid-solo">
-      <a href="#" data-role="button" data-inline="false" data-theme="c"
+      <a href="#" data-role="button" data-inline="false" data-theme="c" 
         data-corners="false" onclick="mapModule.fetchAndShowStopsInArea();">
         <span id="stop_search_text">Search Transit Stops In This Area</span>
       </a>

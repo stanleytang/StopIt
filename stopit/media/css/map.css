@@ -7,6 +7,19 @@
   height: 100%;
 }
 
+/* ----------------------
+   Map instruction popup
+   ---------------------- */
+
+#map_popup_instruction {
+  text-align: center;
+  padding: 3px 2px 4px 2px;
+  position: fixed;
+  bottom: 64px;
+  left: 10%;
+  right: 10%;
+}
+
 /* --------------------------------
    Current location "pulsating" dot
    -------------------------------- */
