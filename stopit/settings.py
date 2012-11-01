@@ -10,6 +10,8 @@ ADMINS = (
     # ('Your Name', 'your_email@example.com'),
 )
 
+# superuser (name:stopit, email:andy.fangus@gmail.com, pw:sloth)
+
 MANAGERS = ADMINS
 
 DATABASES = {
@@ -155,5 +157,5 @@ LOGGING = {
 }
 
 import dj_database_url
-print dj_database_url.config()
-# DATABASES['default'] =  dj_database_url.config()
+if (dj_database_url.config()):
+    DATABASES['default'] =  dj_database_url.config()
