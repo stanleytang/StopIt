@@ -5,7 +5,7 @@ import json
 from datetime import datetime
 from django.utils.timezone import get_default_timezone
 from transit.models import *
-import transit.constants as constants
+from transit.utils import get_readable_time
 
 def index(request):
     """
@@ -64,7 +64,7 @@ def stop(request):
     hour = now.hour
     minutes = now.minute
     
-    hour = 11
+    hour = 12
     minutes = 49
 
     stop = Stop.objects.get(id=stop_id)
@@ -85,8 +85,7 @@ def stop(request):
         soonest_arrival_min = 0
         soonest_arrival_in_min = 0
         soonest_found = False
-        current_time_in_min = hour*constants.MIN_PER_HOUR + minutes
-        print 'current time = %s' % current_time_in_min
+        current_time_in_min = hour*60 + minutes
         delay_time = 0
         for bus in buses:
             arrival_times = json.loads(bus.arrival_times)
@@ -94,25 +93,34 @@ def stop(request):
             bus_arrival_hour = int(arrival_time[0:2])
             bus_arrival_minutes = int(arrival_time[3:5]) - bus.delay
             if bus_arrival_minutes < 0:
-                bus_arrival_hour = (23 if bus_arrival_hour == 0 else
-                    bus_arrival_hour - 1)
-                bus_arrival_minutes += constants.MIN_PER_HOUR
+                bus_arrival_hour =  (bus_arrival_hour - 1) % 24
+                bus_arrival_minutes += 60
             
-            bus_arrival_in_min = (bus_arrival_hour*constants.MIN_PER_HOUR +     
+            bus_arrival_in_min = (bus_arrival_hour*60 +     
                 bus_arrival_minutes)
-            print 'bus arrival time = %s' %bus_arrival_in_min
             if bus_arrival_in_min >= current_time_in_min and \
                 (bus_arrival_in_min < soonest_arrival_in_min or not soonest_found):
                 
                 soonest_arrival_in_min = bus_arrival_in_min
                 soonest_arrival_hour = bus_arrival_hour
-                soonest_arrival_minutes = bus_arrival_minutes
+                soonest_arrival_min = bus_arrival_minutes
                 delay_time = bus.delay
+                soonest_found = True
         
         if soonest_arrival_in_min < current_time_in_min:
             continue
-        line_json["arrival_hour"] = soonest_arrival_hour
-        line_json["arrival_minutes"] = soonest_arrival_minutes
+        line_json["scheduled_arrival_time"] = \
+            get_readable_time(soonest_arrival_hour,soonest_arrival_min)
+        
+        soonest_arrival_min += delay_time
+        soonest_arrival_min = soonest_arrival_min % 60
+        if soonest_arrival_min < 0:
+            soonest_arrival_hour = (soonest_arrival_hour - 1) % 60
+        elif soonest_arrival_min > 60:
+            soonest_arrival_hour = (soonest_arrival_hour + 1) % 60
+            
+        line_json["actual_arrival_time"] =  \
+            get_readable_time(soonest_arrival_hour,soonest_arrival_min)
         line_json["delay_time"] = delay_time
         routes.append(line_json)
             
