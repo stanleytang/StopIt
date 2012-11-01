@@ -1,10 +1,11 @@
 from django.shortcuts import render
-from django.utils import simplejson
 from django.http import HttpResponse
-from django.core import serializers
 from decimal import *
-
-from transit.models import Stop
+import json
+from datetime import datetime
+from django.utils.timezone import get_default_timezone
+from transit.models import *
+import transit.constants as constants
 
 def index(request):
     """
@@ -39,13 +40,8 @@ def stop_map_search(request):
         longitude__range=(lon1, lon2))
     output = []
     for stop in stops:
-        output.append({
-            'id': stop.id,
-            'name': stop.name,
-            'longitude': str(stop.longitude),
-            'latitude': str(stop.latitude)
-        })
-    return HttpResponse(simplejson.dumps({"stops": output}),
+        output.append(stop.json())
+    return HttpResponse(json.dumps({"stops": output}),
         mimetype='application/json')
     
 def stop(request):
@@ -57,30 +53,80 @@ def stop(request):
         
     Return (template objects):
         -stop: {name, latitude, longitude}
-        -routes: [{id, name, destination, scheduled_arrival_time, actual_arrival_time, delay_length}]
+        -routes: [{id, name, destination, scheduled_arrival_time, actual_arrival_time, delay_length}] ---- in order of arrival_time
     """
-    stop_id = request.GET.get('id', 1)
+    stop_id = request.GET.get('id', -1)
+    if stop_id < 0:
+        return redirect('index')
     
-    # if no id, should redirect to homepage
+    now = datetime.today()
+    hour = now.hour
+    minutes = now.minute
     
-    # TODO (andy fang) get stop from database
+    hour = 11
+    minutes = 41
+
+    stop = Stop.objects.get(id=stop_id)
+    lines = Line.objects.filter(linestoplink__stop__id=stop.id)
+    routes = []
     
-    # temporary - using dummy data
-    stop = {"name": "Stop " + str(stop_id), "latitude": 37.4419, 
-        "longitude": -122.1649}
-    
-    lineA = {"id": 1, "name": "Line A", "destination": "Palo Alto Train Station",
-        "arrival_time": 5, "delay_time": 2}
-    
-    lineB = {"id": 2, "name": "Line B", "destination": "San Antonio Shopping Center",
-        "arrival_time": 15, "delay_time": -2}
+    for line in lines:
+        line_json = {
+            "id": line.id,
+            "name": line.name,
+            "destination": line.destination_name
+        }
         
-    lineC = {"id": 3, "name": "Line C", "destination": "SLAC",
-        "arrival_time": 25, "delay_time": 5}
+        # need to calculate arrival_time and delay_time from buses
+        index = LineStopLink.objects.get(line=line, stop=stop).index
+        buses = Bus.objects.filter(line=line)
+        soonest_arrival_hour = hour
+        soonest_arrival_min = minutes+1
+        if minutes+1 == constants.MIN_PER_HOUR:
+            soonest_arrival_hour+= 1
+            soonest_arrival_min = 0
+        soonest_arrival_in_min = ((soonest_arrival_hour)*constants.MIN_PER_HOUR 
+            + soonest_arrival_min)
+        current_time_in_min = hour*constants.MIN_PER_HOUR + minutes
+        delay_time = 0
+        for bus in buses:
+            arrival_times = json.loads(bus.arrival_times)
+            arrival_time = arrival_times[index]
+            bus_arrival_hour = int(arrival_time[0:2])
+            bus_arrival_minutes = int(arrival_time[3:5]) - bus.delay
+            if bus_arrival_minutes < 0:
+                bus_arrival_hour = (23 if bus_arrival_hour == 0 else
+                    bus_arrival_hour - 1)
+                bus_arrival_minutes += constants.MIN_PER_HOUR
+            
+            bus_arrival_in_min = (bus_arrival_hour*constants.MIN_PER_HOUR +     
+                bus_arrival_minutes)
+            if bus_arrival_in_min >= current_time_in_min and \
+                bus_arrival_in_min < soonest_arrival_in_min:
+                
+                soonest_arrival_in_min = bus_arrival_in_min
+                soonest_arrival_hour = bus_arrival_hour
+                soonest_arrival_minutes = bus_arrival_minutes
+                delay_time = bus.delay
+        
+        if soonest_arrival_in_min != current_time_in_min:
+            continue
+        line_json["arrival_hour"] = soonest_arrival_hour
+        line_json["arrival_minutes"] = soonest_arrival_minutes
+        line_json["delay_time"] = delay_time
+        routes.append(line)
     
-    routes = [lineA, lineB, lineC]
+            
     
-    return render(request, "stop.html", {"stop": stop, "routes": routes})
+    # lineA = {"id": 1, "name": "Line A", "destination": "Palo Alto Train Station",
+    #     "arrival_time": 5, "delay_time": 2}
+    # 
+    # lineB = {"id": 2, "name": "Line B", "destination": "San Antonio Shopping Center",
+    #     "arrival_time": 15, "delay_time": -2}
+    #     
+    # lineC = {"id": 3, "name": "Line C", "destination": "SLAC",
+    #     "arrival_time": 25, "delay_time": 5} 
+    return render(request, "stop.html", {"stop": stop.json(), "routes": routes})
     
 def route(request):
     """
@@ -112,10 +158,10 @@ def route_map(request):
         -route: {id, name}
         -start
         -destination
-        -route_points: [{latitude, longitude}]
+        -stop_points: [{latitude, longitude}]
         -bus_points: [{latitude, longitude}]
         
-    If no live buses (e.g. it is midnight) return empty
+    If no live buses (e.g. it is midnight) return route with empty bus_points
     """
     
     route = {"id": 1, "name": "Line A"}
