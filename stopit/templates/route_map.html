@@ -1,9 +1,5 @@
 {% extends "base.html" %}
 
-{% block extra_head %}
-
-{% endblock %}
-
 {% block body %}
 <div data-role="page" data-add-back-btn="true" id="route_map_page">
   <div data-role="header" data-theme="b">
@@ -13,13 +9,22 @@
 	  </a>
 	</div>
 	
-	<div id="route_map_canvas"></div>
+	<div class="map_canvas" id="live_route_map_canvas"></div>
 	
-	<script type="text/javascript">
-    var mapModule2;
-    $("body").ready(function() {
-      mapModule2 = new MapModule("route_map_canvas");
-      // $('#map_popup_instruction').popup('open');
+	<div class="ui-content ui-popup ui-overlay-shadow ui-corner-all ui-body-e" 
+    id="live_bus_popup_instruction" data-theme="e">
+    <a href="#" onclick="$('#live_bus_popup_instruction').remove();"
+      data-role="button" data-theme="a" data-icon="delete"
+      data-iconpos="notext" class="ui-btn-right">Close</a>
+      <!-- show no bus sign if no buses running -->
+  	<p>Live map of location for all buses on {{ route.name }}<p>
+  </div>
+	
+  <script type="text/javascript">
+    var liveRouteMapModule;
+    $(document).bind("pageshow", function(event, data) {
+      liveRouteMapModule = new MapModule("live_route_map_canvas");
+      google.maps.event.trigger(liveRouteMapModule.map, 'resize');
     });
   </script>
 </div>

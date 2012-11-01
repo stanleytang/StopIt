@@ -125,5 +125,10 @@ def route_map(request):
         -destination
         -route_points: [{latitude, longitude}]
         -bus_points: [{latitude, longitude}]
+        
+    If no live buses (e.g. it is midnight) return empty
     """
-    return render(request, "route_map.html", locals())
+    
+    route = {"id": 1, "name": "Line A"}
+    
+    return render(request, "route_map.html", {"route": route})
