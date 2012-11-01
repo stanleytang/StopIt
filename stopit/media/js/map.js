@@ -209,3 +209,43 @@ MapModule.prototype.clearStopsOnMap = function() {
     this.markersArray.length = 0;
   }
 }
+
+MapModule.prototype.displayRealTimeRouteData= function(waypoints, buses) {
+  this.displayRouteOnMap(waypoints);
+  this.displayBusesOnMap(buses);
+}
+
+MapModule.prototype.displayRouteOnMap = function(waypoints) {
+  var directionsDisplay = new google.maps.DirectionsRenderer({
+    suppressMarkers: true,
+  });
+  var directionsService = new google.maps.DirectionsService();
+  
+  directionsDisplay.setMap(this.map);
+  
+  var origin = waypoints[0].location;
+  var destination = waypoints[waypoints.length - 1].location;
+  var editedWaypoints = waypoints.slice(1, waypoints.length - 1);
+
+  var request = {
+    origin: origin,
+    destination: destination,
+    waypoints: editedWaypoints,
+    optimizeWaypoints: false,
+    travelMode: google.maps.DirectionsTravelMode.DRIVING
+  };
+  directionsService.route(request, function(response, status) {
+    if (status == google.maps.DirectionsStatus.OK) {
+      directionsDisplay.setDirections(response);
+    }
+  });
+  
+  // TODO - show start/destination
+}
+
+MapModule.prototype.displayBusesOnMap = function(buses) {
+  
+}
+
+
+

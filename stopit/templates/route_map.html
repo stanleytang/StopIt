@@ -16,8 +16,11 @@
     <a href="#" onclick="$('#live_bus_popup_instruction').remove();"
       data-role="button" data-theme="a" data-icon="delete"
       data-iconpos="notext" class="ui-btn-right">Close</a>
-      <!-- show no bus sign if no buses running -->
-  	<p>Live map of where buses are for <b>{{ route.name }}</b><p>
+  	  {% if bus_points %}
+  	  <p>Live map of where buses are for <b>{{ route.name }}</b><p>
+  	  {% else %}
+  	  <p>No buses running for <b>{{ route.name }}</b><p> 
+      {% endif %}
   </div>
 	
   <script type="text/javascript">
@@ -25,6 +28,21 @@
     $(document).bind("pageshow", function(event, data) {
       liveRouteMapModule = new MapModule("live_route_map_canvas");
       google.maps.event.trigger(liveRouteMapModule.map, 'resize');
+      
+      var buses = null; // temp
+      
+      var waypoints = [];
+      {% for latLong in route_points %}
+      waypoints.push({
+        location: new google.maps.LatLng(
+          {{ latLong.latitude }}, 
+          {{ latLong.longitude }}
+        ),
+        stopover: true
+      });
+      {% endfor %}
+      
+      liveRouteMapModule.displayRealTimeRouteData(waypoints, buses);      
     });
   </script>
 </div>
