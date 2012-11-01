@@ -2,6 +2,11 @@
    Stop page
    ------------- */
    
+#stop_page #cover_photo_container {
+  height: 135px;
+  color: white;
+}
+
 #stop_page #cover_photo_container #stop_name {
   position: absolute;
   background: rgba(0, 0, 0, 0.5);

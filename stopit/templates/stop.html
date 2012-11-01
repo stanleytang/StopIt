@@ -4,7 +4,8 @@
 <div data-role="page" data-add-back-btn="true" id="stop_page">
   <div data-role="header" data-theme="b">
 	  <h1>StopIt</h1>
-	  <a href="/" data-icon="home" class="ui-btn-right" data-direction="reverse">
+	  <a href="/" data-icon="home" class="ui-btn-right"
+	  	data-direction="reverse">
 	    Home
 	  </a>
 	  <!-- replace header with fancy logo?? (TODO) -->
@@ -13,9 +14,11 @@
 	<div id="cover_photo_container">
 	  <div id="stop_name">
 	    <h2>{{ stop.name }}</h2>
-	    <p id="stop_distance_from_location">2 miles away</p>
+	    <p id="stop_distance_from_location"></p>
 	  </div>
-	  <img id="streetview-image" style="margin:auto" src="/media/images/no-stop-preview.jpg" style="width: 100%"/>
+	  <img id="streetview-image" style="margin:auto"
+	  	src="/media/images/no-stop-preview.jpg" 
+	  	style="width: 100%"/>
 	  <!-- TODO: dont use DEFAULT_IMAGE. instead, have a REAl image -->
 	</div>
   
