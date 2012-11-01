@@ -65,7 +65,7 @@ def stop(request):
     # if no id, should redirect to homepage
     
     # TODO (andy fang) get stop from database
-    
+    # TODO Someone - fix this fake data so it uses the  new variables
     # temporary - using dummy data
     stop = {"name": "Stop " + str(stop_id), "latitude": 37.4419, 
         "longitude": -122.1649}
