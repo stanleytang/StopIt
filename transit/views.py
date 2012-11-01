@@ -1,6 +1,10 @@
 from django.shortcuts import render
 from django.utils import simplejson
 from django.http import HttpResponse
+from django.core import serializers
+from decimal import *
+
+from transit.models import Stop
 
 def index(request):
     """
@@ -17,46 +21,33 @@ def stop_map_search(request):
         -lon1
         -lat2
         -lon2
+        
+    (lat1, lon1) represents NE point of map region
+    (lat2, lon2) represents SW point of map region
     
     Return (JSON object):
         -stops: [{id, name, longitude, latitude}]
         
     If no stops found, return empty
     """
+    lat1 = Decimal(request.GET['lat1'])
+    lat2 = Decimal(request.GET['lat2'])
+    lon1 = Decimal(request.GET['lon1'])
+    lon2 = Decimal(request.GET['lon2'])
     
-    # dummy data
+    stops = Stop.objects.filter(latitude__range=(lat1, lat2), longitude__range=(lon1, lon2))
+    output = []
+    for stop in stops:
+        output.append({
+            'id': stop.id,
+            'name': stop.name,
+            'longitude': str(stop.longitude),
+            'latitude': str(stop.latitude)
+        })
     
-    stop1 = {
-        "name": "Palo Alto Station",
-        "latitude": 37.4419,
-        "longitude": -122.1649,
-        "id": 1,
-    }
     
-    stop2 = {
-        "name": "The Oval",
-        "latitude": 37.4290,
-        "longitude": -122.1706,
-        "id": 2,
-    }
-    
-    stop3 = {
-        "name": "Vaden Health Center",
-        "latitude": 37.4220,
-        "longitude": -122.1624,
-        "id": 3,
-    }
-    
-    stop4 = {
-        "name": "Galvez Street",
-        "latitude": 37.4290,
-        "longitude": -122.1650,
-        "id": 4,
-    }
-    
-    json = simplejson.dumps({"stops": [stop1, stop2, stop3, stop4]})
-  
-    return HttpResponse(simplejson.dumps(json),
+    json = simplejson.dumps({"stops": output})
+    return HttpResponse(json,
         mimetype='application/json')
     
 def stop(request):
