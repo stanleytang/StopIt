@@ -57,7 +57,7 @@ def stop(request):
         
     Return (template objects):
         -stop: {name, latitude, longitude}
-        -routes: [{id, name, destination, arrival_time, delay_time}]
+        -routes: [{id, name, destination, scheduled_arrival_time, actual_arrival_time, delay_length}]
     """
     stop_id = request.GET.get('id', 1)
     
@@ -114,5 +114,10 @@ def route_map(request):
         -destination
         -route_points: [{latitude, longitude}]
         -bus_points: [{latitude, longitude}]
+        
+    If no live buses (e.g. it is midnight) return empty
     """
-    return render(request, "route_map.html", locals())
+    
+    route = {"id": 1, "name": "Line A"}
+    
+    return render(request, "route_map.html", {"route": route})

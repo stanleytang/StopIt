@@ -2,7 +2,7 @@
    Map container 
    ------------- */
 
-#map_canvas {
+.map_canvas {
   width: 100%;
   height: 100%;
 }
@@ -11,11 +11,20 @@
    Map instruction popup
    ---------------------- */
 
-#map_popup_instruction {
+#stop_search_popup_instruction {
   text-align: center;
   padding: 3px 2px 4px 2px;
   position: fixed;
   bottom: 64px;
+  left: 10%;
+  right: 10%;
+}
+
+#live_bus_popup_instruction {
+  text-align: center;
+  padding: 3px 2px 4px 2px;
+  position: fixed;
+  top: 65px;
   left: 10%;
   right: 10%;
 }
@@ -56,7 +65,7 @@
 
 /* Get the container that's just outside the marker image, 
 	 which just happens to have our Marker title in it */
-#map_canvas div.gmnoprint[title="My location"] {
+.map_canvas div.gmnoprint[title="My location"] {
 	-moz-animation: pulsate 1.5s ease-in-out infinite;
 	-webkit-animation: pulsate 1.5s ease-in-out infinite;
 	border:1pt solid #fff;
@@ -82,7 +91,7 @@
 
 /* Hide the superfluous marker image since it would expand and shrink with 
    its containing element */
-#map_canvas div.gmnoprint[title="My location"] img {
+.map_canvas div.gmnoprint[title="My location"] img {
 	display:none;
 }
 
