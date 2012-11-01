@@ -4,7 +4,8 @@
 <div data-role="page" data-add-back-btn="true" id="stop_page">
   <div data-role="header" data-theme="b">
 	  <h1>StopIt</h1>
-	  <a href="/" data-icon="home" class="ui-btn-right" data-direction="reverse">
+	  <a href="/" data-icon="home" class="ui-btn-right"
+	  	data-direction="reverse">
 	    Home
 	  </a>
 	  <!-- replace header with fancy logo?? (TODO) -->
@@ -15,7 +16,8 @@
 	    <h2>{{ stop.name }}</h2>
 	    <p id="stop_distance_from_location"></p>
 	  </div>
-    <img id="streetview-image" src="DEFAULT_IMAGE" style="width: 100%"/>
+	  <img id="streetview-image"
+	  	src="/media/images/no-stop-preview.jpg" />
 	  <!-- TODO: dont use DEFAULT_IMAGE. instead, have a REAl image -->
 	</div>
   
@@ -23,10 +25,26 @@
     <ul data-role="listview" class="ui-content">
       {% for route in routes %}
     	<li>
-    	  <a href="/route/?id={{ route.id }}">
-    			<h3>{{ route.name }}</h3>
-    			<p>To: {{ route.destination }}</p>
-    		</a>
+				<fieldset class="ui-grid-c">
+					<div class="ui-block-a">
+		    	  <a href="/route/?id={{ route.id }}">
+							<h3> {{ route.name }} </h3>
+						</a>
+						<p>To: {{ route.destination }} </p>
+					</div>
+					<div class="ui-block-b">
+						<h3>{{ route.scheduled_arrival_time }}</h3>
+						<p>Scheduled Arrival Time</p>
+					</div>
+					<div class="ui-block-c">
+						<h3>{{ route.actual_arrival_time }}</h3>
+						<p>Estimated Actual Arrival Time</p>
+					</div>
+					<div class="ui-block-d">
+						<h3 class="delay-heading">{{ route.delay_time }}</h3>
+						<p class="delay-subheading"></p>
+					</div>
+				</fieldset>
     	</li>
     	{% endfor %}
     </ul>
@@ -59,6 +77,29 @@
     }, function(error) {
       $("#stop_distance_from_location").remove();
     });
+		
+		//Change delay time styling and subtext depending on if it's +/-
+		var delay_time_elems = $(".delay-heading");
+		var delay_subheadings = $(".delay-subheading");
+		debugger;
+		for (var i = 0; i < delay_time_elems.length; i++) {
+			var elem = delay_time_elems[i];
+			var subheading = delay_subheadings[i];
+			var delay_time = elem.outerText/1;
+			var time_color, delay_status_text;
+			if (delay_time > 0) {
+				$(elem).addClass("red-text");
+				$(elem).append(" min.");
+				$(subheading).text("Late");
+			} else if (delay_time == 0) {
+				$(elem).addClass("black-text");
+				$(elem).text("On Time");
+			} else if (delay_time < 0) {
+				$(elem).addClass("blue-text");
+				$(elem).text(Math.abs(delay_time) + " min.");
+				$(subheading).text("Early");
+			}
+		}
     
   </script>
 </div>

@@ -1,3 +1,15 @@
+.red-text {
+	color: red;
+}
+
+.black-text {
+	color: #000;
+}
+
+.blue-text {
+	color: blue;
+}
+
 /* -------------
    Stop page
    ------------- */
@@ -22,4 +34,20 @@
 #stop_page #cover_photo_container #stop_name #stop_distance_from_location {
   color: white;
   margin: 0px;
+}
+
+#stop_page .ui-block-a {
+	width: 40%;
+}
+
+#stop_page .ui-block-b {
+	width: 25%;
+}
+
+#stop_page .ui-block-c {
+	width: 25%;
+}
+
+#stop_page .ui-block-d {
+	width: 10%;
 }
