@@ -10,6 +10,8 @@ ADMINS = (
     # ('Your Name', 'your_email@example.com'),
 )
 
+# superuser (name:stopit, email:andy.fangus@gmail.com, pw:sloth)
+
 MANAGERS = ADMINS
 
 DATABASES = {
@@ -119,8 +121,8 @@ INSTALLED_APPS = (
     'django.contrib.sites',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    # Uncomment the next line to enable the admin:
-    # 'django.contrib.admin',
+    'django.contrib.admin',
+    # 'south'
     # Uncomment the next line to enable admin documentation:
     # 'django.contrib.admindocs',
 )
@@ -155,4 +157,5 @@ LOGGING = {
 }
 
 import dj_database_url
-DATABASES['default'] =  dj_database_url.config()
+if (dj_database_url.config()):
+    DATABASES['default'] =  dj_database_url.config()
