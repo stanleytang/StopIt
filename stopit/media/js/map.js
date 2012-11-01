@@ -54,10 +54,10 @@ MapModule.prototype.fetchAndShowStopsInArea = function() {
   request.done(function(msg) {
     $.mobile.loading('hide');
      
-    var json = JSON.parse(msg);
+    var json = msg;
     
     // If empty, show no results found message
-    if (!json || !json["stops"]) {
+    if (!json || !json["stops"].length) {
       $.mobile.loading('show', {
         textonly: true,
         textVisible: true,
