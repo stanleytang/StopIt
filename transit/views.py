@@ -35,7 +35,8 @@ def stop_map_search(request):
     lon1 = Decimal(request.GET['lon1'])
     lon2 = Decimal(request.GET['lon2'])
     
-    stops = Stop.objects.filter(latitude__range=(lat1, lat2), longitude__range=(lon1, lon2))
+    stops = Stop.objects.filter(latitude__range=(lat1, lat2),
+        longitude__range=(lon1, lon2))
     output = []
     for stop in stops:
         output.append({
@@ -44,10 +45,7 @@ def stop_map_search(request):
             'longitude': str(stop.longitude),
             'latitude': str(stop.latitude)
         })
-    
-    
-    json = simplejson.dumps({"stops": output})
-    return HttpResponse(json,
+    return HttpResponse(simplejson.dumps({"stops": output}),
         mimetype='application/json')
     
 def stop(request):
