@@ -26,8 +26,14 @@
 	</script>
 	
 	<script src="http://code.jquery.com/mobile/1.2.0/jquery.mobile-1.2.0.min.js"></script>
-  
-  {% block extra_head %}{% endblock %}
+	
+	<!-- google maps stuff -->
+	<link rel="stylesheet" type="text/css" href="/media/css/map.css">
+  <script type="text/javascript" 
+    src="https://maps.googleapis.com/maps/api/js?key=
+    AIzaSyBX3kXaqyDwwZuLQpUyTVVBo7pc83S9kTY&sensor=true">
+  </script>
+  <script type="text/javascript" src="/media/js/map.js"></script>
 </head>
 <body>
   	{% block body %}{% endblock %}
