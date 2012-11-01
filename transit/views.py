@@ -68,7 +68,7 @@ def stop(request):
         
     Return (template objects):
         -stop: {name, latitude, longitude}
-        -routes: [{id, name, destination, arrival_time, delay_time}]
+        -routes: [{id, name, destination, scheduled_arrival_time, actual_arrival_time, delay_length}]
     """
     stop_id = request.GET.get('id', 1)
     
