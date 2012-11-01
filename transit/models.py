@@ -17,6 +17,12 @@ class Bus(models.Model):
         return '%s (%s): %s' %(self.line.name, str(self.delay),
             self.arrival_times)
     
+    def json(self):
+        return {
+            "latitude": self.latitude,
+            "longitude": self.longitude
+        }
+    
     class Meta:
         verbose_name_plural = "buses"
 
@@ -34,6 +40,13 @@ class Line(models.Model):
     
     def __unicode__(self):
         return self.name
+    
+    def json(self):
+        return {
+            "id": self.id,
+            "name": self.name,
+            "destination": self.destination_name
+        }
 
 class LineStopLink(models.Model):
     """

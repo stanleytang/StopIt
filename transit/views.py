@@ -64,20 +64,14 @@ def stop(request):
     hour = now.hour
     minutes = now.minute
     
-    hour = 12
-    minutes = 49
+    hour = 11
+    minutes = 19
 
     stop = Stop.objects.get(id=stop_id)
     lines = Line.objects.filter(linestoplink__stop__id=stop.id)
     routes = []
     
     for line in lines:
-        line_json = {
-            "id": line.id,
-            "name": line.name,
-            "destination": line.destination_name
-        }
-        
         # need to calculate arrival_time and delay_time from buses
         index = LineStopLink.objects.get(line=line, stop=stop).index
         buses = Bus.objects.filter(line=line)
@@ -109,6 +103,8 @@ def stop(request):
         
         if soonest_arrival_in_min < current_time_in_min:
             continue
+        
+        line_json = line.json()
         line_json["scheduled_arrival_time"] = \
             get_readable_time(soonest_arrival_hour,soonest_arrival_min)
         
@@ -118,13 +114,14 @@ def stop(request):
             soonest_arrival_hour = (soonest_arrival_hour - 1) % 60
         elif soonest_arrival_min > 60:
             soonest_arrival_hour = (soonest_arrival_hour + 1) % 60
-            
+        
         line_json["actual_arrival_time"] =  \
             get_readable_time(soonest_arrival_hour,soonest_arrival_min)
         line_json["delay_time"] = delay_time
+        line_json["sort_key"] = soonest_arrival_in_min+delay_time
         routes.append(line_json)
             
-    
+    routes.sort(key=lambda route: route["sort_key"])
     # lineA = {"id": 1, "name": "Line A", "destination": "Palo Alto Train Station",
     #     "arrival_time": 5, "delay_time": 2}
     # 
@@ -147,12 +144,19 @@ def route(request):
         -stops: [{id, name}]
     """
     route_id = request.GET['id']
+    line = Line.objects.get(pk=route_id)
     
-    # TODO (andy fang) get route from database
+    links = LineStopLink.objects.filter(line=line).order_by('index')
     
-    # temporary - using dummy data
+    stops = []
+    for link in links:
+        stop = link.stop.json()
+        del stop['latitude']
+        del stop['longitude']
+        stops.append(stop)
     
-    return render(request, "route.html", locals())
+    return render(request, "route.html",
+        {"stops": stops, "routes": line.json()})
         
 def route_map(request):
     """
@@ -165,24 +169,43 @@ def route_map(request):
         -route: {id, name}
         -start
         -destination
-        -stop_points: [{latitude, longitude}]
+        -route_points: [{latitude, longitude}]
         -bus_points: [{latitude, longitude}]
         
     If no live buses (e.g. it is midnight) return route with empty bus_points
     """
+    route_id = request.GET['id']
+    line = Line.objects.get(pk=route_id)
+    route = line.json()
+    del route["destination"]
     
-    # dummy data
+    links = LineStopLink.objects.filter(line=line).order_by('index')
     
-    # note - we can only have maximum of 10 (including start + destination) route points
+    stops = []
+    for link in links:
+        stop = link.stop.json()
+        del stop['id']
+        del stop['name']
+        stops.append(stop)
+
+    buses = Bus.objects.filter(line=line)
+    bus_locations = []
+    for bus in buses:
+        bus_locations.append(bus.json())
+        
+    # TODO filter buses whose last destination time has already passed
+        
     
-    route = {"id": 1, "name": "Line A"}
-    route_points = [
-        {"latitude": 37.4419, "longitude": -122.1649}, # Palo Alto (start)
-        {"latitude": 37.4290, "longitude": -122.1650}, # Galvez
-        {"latitude": 37.4223, "longitude": -122.1629}, # Vaden
-        {"latitude": 37.4268, "longitude": -122.1814}, # Suites
-        {"latitude": 37.4311, "longitude": -122.1778}, # Med school
-        {"latitude": 37.4419, "longitude": -122.1649}, # Palo Alto (destination)
-    ]
+    # note - we can only have max of 10 (including start + dest) route points
     
-    return render(request, "route_map.html", {"route": route, "route_points": route_points})
+    # route = {"id": 1, "name": "Line A"}
+    # route_points = [
+    #     {"latitude": 37.4419, "longitude": -122.1649}, # Palo Alto (start)
+    #     {"latitude": 37.4290, "longitude": -122.1650}, # Galvez
+    #     {"latitude": 37.4223, "longitude": -122.1629}, # Vaden
+    #     {"latitude": 37.4268, "longitude": -122.1814}, # Suites
+    #     {"latitude": 37.4311, "longitude": -122.1778}, # Med school
+    #     {"latitude": 37.4419, "longitude": -122.1649}, # Palo Alto (destination)
+    # ]
+    
+    return render(request, "route_map.html", {"route": route, "route_points": stops})
