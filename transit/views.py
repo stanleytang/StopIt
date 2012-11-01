@@ -65,7 +65,7 @@ def stop(request):
     minutes = now.minute
     
     hour = 11
-    minutes = 41
+    minutes = 49
 
     stop = Stop.objects.get(id=stop_id)
     lines = Line.objects.filter(linestoplink__stop__id=stop.id)
@@ -81,14 +81,12 @@ def stop(request):
         # need to calculate arrival_time and delay_time from buses
         index = LineStopLink.objects.get(line=line, stop=stop).index
         buses = Bus.objects.filter(line=line)
-        soonest_arrival_hour = hour
-        soonest_arrival_min = minutes+1
-        if minutes+1 == constants.MIN_PER_HOUR:
-            soonest_arrival_hour+= 1
-            soonest_arrival_min = 0
-        soonest_arrival_in_min = ((soonest_arrival_hour)*constants.MIN_PER_HOUR 
-            + soonest_arrival_min)
+        soonest_arrival_hour = 0
+        soonest_arrival_min = 0
+        soonest_arrival_in_min = 0
+        soonest_found = False
         current_time_in_min = hour*constants.MIN_PER_HOUR + minutes
+        print 'current time = %s' % current_time_in_min
         delay_time = 0
         for bus in buses:
             arrival_times = json.loads(bus.arrival_times)
@@ -102,21 +100,21 @@ def stop(request):
             
             bus_arrival_in_min = (bus_arrival_hour*constants.MIN_PER_HOUR +     
                 bus_arrival_minutes)
+            print 'bus arrival time = %s' %bus_arrival_in_min
             if bus_arrival_in_min >= current_time_in_min and \
-                bus_arrival_in_min < soonest_arrival_in_min:
+                (bus_arrival_in_min < soonest_arrival_in_min or not soonest_found):
                 
                 soonest_arrival_in_min = bus_arrival_in_min
                 soonest_arrival_hour = bus_arrival_hour
                 soonest_arrival_minutes = bus_arrival_minutes
                 delay_time = bus.delay
         
-        if soonest_arrival_in_min != current_time_in_min:
+        if soonest_arrival_in_min < current_time_in_min:
             continue
         line_json["arrival_hour"] = soonest_arrival_hour
         line_json["arrival_minutes"] = soonest_arrival_minutes
         line_json["delay_time"] = delay_time
-        routes.append(line)
-    
+        routes.append(line_json)
             
     
     # lineA = {"id": 1, "name": "Line A", "destination": "Palo Alto Train Station",
