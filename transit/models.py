@@ -67,7 +67,7 @@ class LineStopLink(models.Model):
     index = models.IntegerField()
     
     def __unicode__(self):
-        return '%s <--> %s' %(self.line.name, self.stop.name)
+        return '%s <--> (%s) %s' %(self.line.name, str(index), self.stop.name)
 
 
 class Stop(models.Model):
