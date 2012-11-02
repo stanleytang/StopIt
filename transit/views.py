@@ -173,12 +173,27 @@ def route_map(request):
         del stop['name']
         stops.append(stop)
 
+    now = datetime.today()
+    hour = now.hour
+    minutes = now.minute
+    now_in_min = hour*60+minutes
+    
     buses = Bus.objects.filter(line=line)
     bus_locations = []
     for bus in buses:
-        bus_locations.append(bus.json())
+        last_arrival = json.loads(bus.arrival_times)[-1]
+        last_arrival_in_min = int(last_arrival[0:2])*60 + int(last_arrival[3:5])
         
-    # TODO filter buses whose last destination time has already passed
+        if last_arrival_in_min < now_in_min:
+            # if the last arrival for this bus has already passed, do not show
+            continue
+        
+        bus_json = bus.json()
+        bus_json["sort_key"] = last_arrival_in_min
+        bus_locations.append(bus.json())
+    
+    bus_locations.sort(key=lambda bus: bus["sort_key"])[0:10]
+    
         
     
     # note - we can only have max of 10 (including start + dest) route points

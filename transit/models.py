@@ -19,8 +19,8 @@ class Bus(models.Model):
     
     def json(self):
         return {
-            "latitude": self.latitude,
-            "longitude": self.longitude
+            "latitude": str(self.latitude),
+            "longitude": str(self.longitude)
         }
     
     class Meta:
@@ -67,7 +67,7 @@ class LineStopLink(models.Model):
     index = models.IntegerField()
     
     def __unicode__(self):
-        return '%s <--> %s' %(self.line.name, self.stop.name)
+        return '%s <--> (%s) %s' %(self.line.name, str(index), self.stop.name)
 
 
 class Stop(models.Model):
