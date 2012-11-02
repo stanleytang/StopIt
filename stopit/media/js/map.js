@@ -285,20 +285,23 @@ MapModule.prototype.displayBusesOnMap = function(buses) {
 		'/media/images/busIcon.png',
 		null, // size
 		null, // origin
-		new google.maps.Point( 8, 8 ), // anchor (move to center of marker)
-		new google.maps.Size( 17, 17 ) // scaled size (for Retina display icon)
+		new google.maps.Point( 9, 9 ), // anchor (move to center of marker)
+		new google.maps.Size( 19, 19 ) // scaled size (for Retina display icon)
 	);
   
-  for (location in buses) {
+  for (var i = 0; i < buses.length; i++) {
+    var location = buses[i].location;
+    
     // Create marker
     var busMarker = new google.maps.Marker({
       position: location,
       map: this.map,
       icon: image,
-      flat: true
+      flat: true,
+      title: "bus"
     });
     
-    // Popup window
+    // Popup window - bus details (TO DO)
     
   }
 }
