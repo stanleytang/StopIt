@@ -210,12 +210,15 @@ MapModule.prototype.clearStopsOnMap = function() {
   }
 }
 
-MapModule.prototype.displayRealTimeRouteData= function(waypoints, buses) {
-  this.displayRouteOnMap(waypoints);
+MapModule.prototype.displayRealTimeRouteData = function(waypoints, 
+                                                        buses,
+                                                        startName,
+                                                        destinationName) {
+  this.displayRouteOnMap(waypoints, startName, destinationName);
   this.displayBusesOnMap(buses);
 }
 
-MapModule.prototype.displayRouteOnMap = function(waypoints) {
+MapModule.prototype.displayRouteOnMap = function(waypoints, startName, destinationName) {
   var directionsDisplay = new google.maps.DirectionsRenderer({
     suppressMarkers: true,
   });
@@ -240,11 +243,64 @@ MapModule.prototype.displayRouteOnMap = function(waypoints) {
     }
   });
   
-  // TODO - show start/destination
+  // Add start marker
+  var startMarker = new google.maps.Marker({
+    position: origin,
+    map: this.map,
+    title: startName
+  });
+  
+  var startInfoWindow = new google.maps.InfoWindow();
+  google.maps.event.addListener(startMarker, 'click', function() {
+    if (startName == destinationName) {
+      var content = "<b>Start/Destination:</b> " + startName;
+      startInfoWindow.setContent(content);
+      startInfoWindow.open(this.map, this);
+    } else {
+      var content = "<b>Start:</b> " + startName;
+      startInfoWindow.setContent(content);
+      startInfoWindow.open(this.map, this);
+    }
+  });
+  
+  if (startName === destinationName) return;
+  
+  // Add destination marker
+  var destinationMarker = new google.maps.Marker({
+    position: destination,
+    map: this.map,
+    title: destinationName
+  });
+  
+  var destinationInfoWindow = new google.maps.InfoWindow();
+  google.maps.event.addListener(destinationMarker, 'click', function() {
+    var content = "<b>Destination:</b> " + destinationName;
+    destinationInfoWindow.setContent(content);
+    destinationInfoWindow.open(this.map, this);  
+  });
 }
 
 MapModule.prototype.displayBusesOnMap = function(buses) {
+	var image = new google.maps.MarkerImage(
+		'/media/images/busIcon.png',
+		null, // size
+		null, // origin
+		new google.maps.Point( 8, 8 ), // anchor (move to center of marker)
+		new google.maps.Size( 17, 17 ) // scaled size (for Retina display icon)
+	);
   
+  for (location in buses) {
+    // Create marker
+    var busMarker = new google.maps.Marker({
+      position: location,
+      map: this.map,
+      icon: image,
+      flat: true
+    });
+    
+    // Popup window
+    
+  }
 }
 
 
