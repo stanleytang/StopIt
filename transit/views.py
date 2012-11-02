@@ -140,7 +140,7 @@ def route(request):
     line = line.json()
     line["destination"] = dest.name
     return render(request, "route.html",
-        {"stops": stops, "routes": line})
+        {"stops": stops, "route": line})
         
 def route_map(request):
     """

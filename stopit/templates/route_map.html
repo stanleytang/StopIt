@@ -29,7 +29,15 @@
       liveRouteMapModule = new MapModule("live_route_map_canvas");
       google.maps.event.trigger(liveRouteMapModule.map, 'resize');
       
-      var buses = null; // temp
+      var buses = [];
+      {% for latLong in bus_points %}
+      buses.push({
+        location: new google.maps.LatLng(
+          {{ latLong.latitude }}, 
+          {{ latLong.longitude }}
+        )
+      });
+      {% endfor %}
       
       var waypoints = [];
       {% for latLong in route_points %}
@@ -42,7 +50,12 @@
       });
       {% endfor %}
       
-      liveRouteMapModule.displayRealTimeRouteData(waypoints, buses);      
+      liveRouteMapModule.displayRealTimeRouteData(
+        waypoints, 
+        buses, 
+        "{{ start }}",
+        "{{ destination}}"
+      );      
     });
   </script>
 </div>
