@@ -96,10 +96,12 @@ def stop(request):
         if soonest_arrival_in_min < current_time_in_min:
             continue
         
+        dest = line.destination().name
         line_json = line.json()        
         line_json["arrives_in"] =  str(soonest_arrival_in_min -
             current_time_in_min)
         line_json["delay_length"] = delay_time
+        line_json["destination"] = dest
         routes.append(line_json)
             
     routes.sort(key=lambda route: route["arrives_in"])
@@ -140,7 +142,7 @@ def route(request):
     line = line.json()
     line["destination"] = dest.name
     return render(request, "route.html",
-        {"stops": stops, "routes": line})
+        {"stops": stops, "route": line})
         
 def route_map(request):
     """
