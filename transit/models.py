@@ -33,10 +33,21 @@ class Line(models.Model):
     name = models.CharField(max_length=100)
     opposite_line = models.OneToOneField('Line', null=True, blank=True)
         # e.g. Counterclockwise version of a clockwise line
-    destination_name = models.CharField(max_length=100)
     # Related-name fields
     # bus_set - Set of buses related to this line
     # stops - Stops for this Line
+    
+    def start(self):
+        """
+        Return the first Stop for the line
+        """
+        return list(self.linestoplink_set.order_by('index'))[0].stop
+    
+    def destination(self):
+        """
+        Return the last Stop for the line
+        """
+        return list(self.linestoplink_set.order_by('index'))[-1].stop
     
     def __unicode__(self):
         return self.name
@@ -45,7 +56,6 @@ class Line(models.Model):
         return {
             "id": self.id,
             "name": self.name,
-            "destination": self.destination_name
         }
 
 class LineStopLink(models.Model):
