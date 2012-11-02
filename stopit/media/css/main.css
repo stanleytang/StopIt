@@ -15,7 +15,7 @@
    ------------- */
    
 #stop_page #cover_photo_container {
-  height: 135px;
+  height: 180px;
   color: white;
 }
 
@@ -37,7 +37,7 @@
 }
 
 #stop_page .ui-block-a {
-	width: 40%;
+	width: 50%;
 }
 
 #stop_page .ui-block-b {
@@ -46,8 +46,4 @@
 
 #stop_page .ui-block-c {
 	width: 25%;
-}
-
-#stop_page .ui-block-d {
-	width: 10%;
 }
