@@ -1,4 +1,4 @@
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from django.http import HttpResponse
 from decimal import *
 import json
@@ -53,12 +53,12 @@ def stop(request):
         
     Return (template objects):
         -stop: {name, latitude, longitude}
-        -routes: [{id, name, destination, scheduled_arrival_time,       
-            actual_arrival_time, delay_length}] ---- in order of arrival_time
+        -routes: [{id, name, destination, arrives_in, delay_length}]
+            ---- in order of arrival_time
     """
     stop_id = request.GET.get('id', -1)
     if stop_id < 0:
-        return redirect('index')
+        return redirect('transit.views.index')
     
     now = datetime.today()
     hour = now.hour
@@ -75,8 +75,6 @@ def stop(request):
         # need to calculate arrival_time and delay_time from buses
         index = LineStopLink.objects.get(line=line, stop=stop).index
         buses = Bus.objects.filter(line=line)
-        soonest_arrival_hour = 0
-        soonest_arrival_min = 0
         soonest_arrival_in_min = 0
         soonest_found = False
         current_time_in_min = hour*60 + minutes
@@ -85,43 +83,26 @@ def stop(request):
             arrival_times = json.loads(bus.arrival_times)
             arrival_time = arrival_times[index]
             bus_arrival_hour = int(arrival_time[0:2])
-            bus_arrival_minutes = int(arrival_time[3:5]) - bus.delay
-            if bus_arrival_minutes < 0:
-                bus_arrival_hour =  (bus_arrival_hour - 1) % 24
-                bus_arrival_minutes += 60
-            
+            bus_arrival_minutes = int(arrival_time[3:5]) + bus.delay
             bus_arrival_in_min = (bus_arrival_hour*60 +     
                 bus_arrival_minutes)
             if bus_arrival_in_min >= current_time_in_min and \
                 (bus_arrival_in_min < soonest_arrival_in_min or not soonest_found):
                 
                 soonest_arrival_in_min = bus_arrival_in_min
-                soonest_arrival_hour = bus_arrival_hour
-                soonest_arrival_min = bus_arrival_minutes
                 delay_time = bus.delay
                 soonest_found = True
         
         if soonest_arrival_in_min < current_time_in_min:
             continue
         
-        line_json = line.json()
-        line_json["scheduled_arrival_time"] = \
-            get_readable_time(soonest_arrival_hour,soonest_arrival_min)
-        
-        soonest_arrival_min += delay_time
-        soonest_arrival_min = soonest_arrival_min % 60
-        if soonest_arrival_min < 0:
-            soonest_arrival_hour = (soonest_arrival_hour - 1) % 60
-        elif soonest_arrival_min > 60:
-            soonest_arrival_hour = (soonest_arrival_hour + 1) % 60
-        
-        line_json["actual_arrival_time"] =  \
-            get_readable_time(soonest_arrival_hour,soonest_arrival_min)
-        line_json["delay_time"] = delay_time
-        line_json["sort_key"] = soonest_arrival_in_min+delay_time
+        line_json = line.json()        
+        line_json["arrives_in"] =  str(soonest_arrival_in_min -
+            current_time_in_min)
+        line_json["delay_length"] = delay_time
         routes.append(line_json)
             
-    routes.sort(key=lambda route: route["sort_key"])
+    routes.sort(key=lambda route: route["arrives_in"])
     # lineA = {"id": 1, "name": "Line A", "destination": "Palo Alto Train Station",
     #     "arrival_time": 5, "delay_time": 2}
     # 
@@ -146,7 +127,7 @@ def route(request):
     route_id = request.GET['id']
     line = Line.objects.get(pk=route_id)
     
-    links = LineStopLink.objects.filter(line=line).order_by('index')
+    links = line.linestoplink_set.order_by('index')
     
     stops = []
     for link in links:
@@ -155,8 +136,11 @@ def route(request):
         del stop['longitude']
         stops.append(stop)
     
+    dest = line.destination()
+    line = line.json()
+    line["destination"] = dest.name
     return render(request, "route.html",
-        {"stops": stops, "routes": line.json()})
+        {"stops": stops, "routes": line})
         
 def route_map(request):
     """
@@ -177,7 +161,6 @@ def route_map(request):
     route_id = request.GET['id']
     line = Line.objects.get(pk=route_id)
     route = line.json()
-    del route["destination"]
     
     links = LineStopLink.objects.filter(line=line).order_by('index')
     
@@ -207,4 +190,10 @@ def route_map(request):
     #     {"latitude": 37.4419, "longitude": -122.1649}, # Palo Alto (destination)
     # ]
     
-    return render(request, "route_map.html", {"route": route, "route_points": stops})
+    return render(request, "route_map.html", {
+        "route": route,
+        "start": line.start().name,
+        "destination": line.destination().name,
+        "route_points": stops,
+        "bus_points": bus_locations
+    })
