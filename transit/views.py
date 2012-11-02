@@ -63,6 +63,10 @@ def stop(request):
     now = datetime.today()
     hour = now.hour
     minutes = now.minute
+    
+    # TODO - remove once we have better dummy data
+    hour = 14
+    minutes = 20
 
     stop = Stop.objects.get(id=stop_id)
     lines = Line.objects.filter(linestoplink__stop__id=stop.id)
@@ -191,6 +195,8 @@ def route_map(request):
             continue
         
         bus_locations.append(bus.json())
+        
+    # TODO - we also don't show bus if first_arrival hasn't happned yet!!!!
         
     # route = {"id": 1, "name": "Line A"}
     # route_points = [
