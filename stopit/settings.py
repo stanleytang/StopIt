@@ -10,7 +10,7 @@ ADMINS = (
     # ('Your Name', 'your_email@example.com'),
 )
 
-# superuser (name:stopit, email:andy.fangus@gmail.com, pw:sloth)
+# superuser on heroku (name:stopit, email:andy.fangus@gmail.com, pw:sloth)
 
 MANAGERS = ADMINS
 
