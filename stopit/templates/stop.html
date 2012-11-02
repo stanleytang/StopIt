@@ -54,6 +54,12 @@
 				</a>
     	</li>
     	{% endfor %}
+    	
+    	{% if not routes %}
+    	<div class="ui-content">
+    	  <b><center>All buses have stopped servicing today</center></b>
+    	</div>
+    	{% endif %}
     </ul>
   </div>
   
