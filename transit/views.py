@@ -92,7 +92,7 @@ def stop(request):
                     soonest_found):
                 
                     soonest_arrival_in_min = bus_arrival_in_min
-                    delay_time = bus.delay 
+                    delay_time = bus.delay
                     soonest_found = True
         
         if soonest_arrival_in_min < current_time_in_min:
