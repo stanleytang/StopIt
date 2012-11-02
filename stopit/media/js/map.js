@@ -1,4 +1,4 @@
-function MapModule(id) {
+function MapModule(id, noFooter) {
   this.markersArray = [];
   
   this.mapCanvas = document.getElementById(id);
@@ -16,7 +16,7 @@ function MapModule(id) {
     }
   );
   
-  this.buildMap();
+  this.buildMap(noFooter);
   this.trackUserLocation();
 }
 
@@ -86,17 +86,18 @@ MapModule.prototype.fetchAndShowStopsInArea = function() {
 }
 
 // Set the map canvas's height/width (Google Maps needs inline height/width)
-MapModule.prototype.buildMap = function() {
+MapModule.prototype.buildMap = function(noFooter) {
 	// Regular web browser
 	if (("standalone" in window.navigator) && !window.navigator.standalone) {
-    var height = $(window).height() - $("div[data-role='header']").height() -
-  	  $("div[data-role='footer']").height() + 60;
+    var height = $(window).height() - 44 - 47 + 60; 
+      // 44 is header, 47 is footer, 60 is web browser header
   
   // In app
   } else {
-	  var height = $(window).height() - $("div[data-role='header']").height() -
-  	  $("div[data-role='footer']").height();
+	  var height = $(window).height() - 44 - 47;
   }	  
+  
+  if (noFooter) height += 47;
 	  
 	this.mapCanvas.style.width = '100%';
 	this.mapCanvas.style.height = height + 'px';
