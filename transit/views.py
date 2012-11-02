@@ -63,9 +63,6 @@ def stop(request):
     now = datetime.today()
     hour = now.hour
     minutes = now.minute
-    
-    hour = 11
-    minutes = 19
 
     stop = Stop.objects.get(id=stop_id)
     lines = Line.objects.filter(linestoplink__stop__id=stop.id)
@@ -188,16 +185,8 @@ def route_map(request):
             # if the last arrival for this bus has already passed, do not show
             continue
         
-        bus_json = bus.json()
-        bus_json["sort_key"] = last_arrival_in_min
         bus_locations.append(bus.json())
-    
-    bus_locations.sort(key=lambda bus: bus["sort_key"])
-    bus_locations = bus_locations[0:10]
-    
         
-    
-    # note - we can only have max of 10 (including start + dest) route points
     # route = {"id": 1, "name": "Line A"}
     # route_points = [
     #     {"latitude": 37.4419, "longitude": -122.1649}, # Palo Alto (start)
