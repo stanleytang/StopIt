@@ -85,7 +85,7 @@
 	
 	/* set the ring's new dimension and re-center it */
 	height:51px!important;
-	margin:-18px 0 0 -18px;
+	margin:-10px 0 0 -10px;
 	width:51px!important;
 }
 
@@ -93,12 +93,4 @@
    its containing element */
 .map_canvas div.gmnoprint[title="My location"] img {
 	display:none;
-}
-
-/* Compensate for mobile devices with high DPI, add iPad media query */
-@media only screen and (-webkit-min-device-pixel-ratio: 1.5), 
-  only screen and (device-width: 768px) {
-	#map_canvas div.gmnoprint[title="My location"] {
-		margin:-10px 0 0 -10px;
-	}
 }
