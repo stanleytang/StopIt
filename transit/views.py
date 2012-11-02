@@ -70,7 +70,11 @@ def stop(request):
     
     for line in lines:
         # need to calculate arrival_time and delay_time from buses
-        index = LineStopLink.objects.get(line=line, stop=stop).index
+        links = LineStopLink.objects.filter(line=line, stop=stop).order_by('index')
+        
+        indices = []
+        for link in list(links):
+            indices.append(link.index)
         buses = Bus.objects.filter(line=line)
         soonest_arrival_in_min = 0
         soonest_found = False
@@ -78,17 +82,18 @@ def stop(request):
         delay_time = 0
         for bus in buses:
             arrival_times = json.loads(bus.arrival_times)
-            arrival_time = arrival_times[index]
-            bus_arrival_hour = int(arrival_time[0:2])
-            bus_arrival_minutes = int(arrival_time[3:5]) + bus.delay
-            bus_arrival_in_min = (bus_arrival_hour*60 +     
-                bus_arrival_minutes)
-            if bus_arrival_in_min >= current_time_in_min and \
-                (bus_arrival_in_min < soonest_arrival_in_min or not soonest_found):
+            for index in indices:
+                arrival_time = arrival_times[index]
+                bus_arrival_hour = int(arrival_time[0:2])
+                bus_arrival_minutes = int(arrival_time[3:5]) + bus.delay
+                bus_arrival_in_min = (bus_arrival_hour*60 + bus_arrival_minutes)
+                if bus_arrival_in_min >= current_time_in_min and \
+                    (bus_arrival_in_min < soonest_arrival_in_min or not \
+                    soonest_found):
                 
-                soonest_arrival_in_min = bus_arrival_in_min
-                delay_time = bus.delay
-                soonest_found = True
+                    soonest_arrival_in_min = bus_arrival_in_min
+                    delay_time = bus.delay
+                    soonest_found = True
         
         if soonest_arrival_in_min < current_time_in_min:
             continue
