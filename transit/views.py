@@ -192,7 +192,8 @@ def route_map(request):
         bus_json["sort_key"] = last_arrival_in_min
         bus_locations.append(bus.json())
     
-    bus_locations.sort(key=lambda bus: bus["sort_key"])[0:10]
+    bus_locations.sort(key=lambda bus: bus["sort_key"])
+    bus_locations = bus_locations[0:10]
     
         
     
