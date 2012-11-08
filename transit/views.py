@@ -104,8 +104,7 @@ def stop(request):
         
         dest = line.destination().name
         line_json = line.json()        
-        line_json["arrives_in"] =  str(soonest_arrival_in_min -
-            current_time_in_min)
+        line_json["arrives_in"] = soonest_arrival_in_min - current_time_in_min
         line_json["delay_length"] = delay_time
         line_json["destination"] = dest
         routes.append(line_json)
