@@ -26,7 +26,8 @@
   <script type="text/javascript">
     var liveRouteMapModule;
     $(document).bind("pageshow", function(event, data) {
-      liveRouteMapModule = new MapModule("live_route_map_canvas");
+      var noFooter = true;
+      liveRouteMapModule = new MapModule("live_route_map_canvas", noFooter);
       google.maps.event.trigger(liveRouteMapModule.map, 'resize');
       
       var buses = [];

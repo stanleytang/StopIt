@@ -26,7 +26,7 @@
   					Route Name
   				</div>
   				<div class="ui-block-b">
-  					Arrives In
+  					Arrives
   				</div>
   				<div class="ui-block-c">
   					Status
@@ -37,10 +37,10 @@
       {% for route in routes %}
     	<li>
     	  <a href="/route/?id={{ route.id }}">
-  				<fieldset class="ui-grid-c">
+  				<div class="ui-grid-c">
   					<div class="ui-block-a">
-  						<h3> {{ route.name }} </h3>
-  						<p>To: {{ route.destination }} </p>
+  						<h3>{{ route.name }}</h3>
+  						<p>To: {{ route.destination }}</p>
   					</div>
   					<div class="ui-block-b">
   						<h3>{{ route.arrives_in }}</h3>
@@ -50,7 +50,7 @@
   						<h3 class="delay-heading">{{ route.delay_length }}</h3>
   						<p class="delay-subheading"></p>
   					</div>
-  				</fieldset>
+  				</div>
 				</a>
     	</li>
     	{% endfor %}
