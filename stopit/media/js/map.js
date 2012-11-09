@@ -2,6 +2,7 @@ function MapModule(id, noFooter) {
   this.markersArray = [];
   
   this.mapCanvas = document.getElementById(id);
+  if (!this.mapCanvas) return;
   this.map = new google.maps.Map(
     this.mapCanvas,
     {
@@ -295,16 +296,34 @@ MapModule.prototype.displayBusesOnMap = function(buses) {
   for (var i = 0; i < buses.length; i++) {
     var location = buses[i].location;
     
+    var delay = buses[i].delay;
+    if (delay > 0) {
+      var delayText = 
+        "<span style='color:red'>" + delay + " mins late</span>";
+    } else if (delay < 0) {
+      var delayText =  "<span style='color:blue'>" + Math.abs(delay) + 
+        " mins early</span>";
+    } else {
+      var delayText = "On time";
+    }
+    
     // Create marker
     var busMarker = new google.maps.Marker({
       position: location,
       map: this.map,
       icon: image,
       flat: true,
-      title: "bus"
+      busName: buses[i].name,
+      delayText: delayText
     });
     
-    // Popup window - bus details (TO DO)
+    // Create popup window
+    var busInfoWindow = new google.maps.InfoWindow();
+    google.maps.event.addListener(busMarker, 'click', function() {
+      var content = "<b>" + this.busName + "</b><br />" + this.delayText;
+      busInfoWindow.setContent(content);
+      busInfoWindow.open(this.map, this);
+    });
     
   }
 }
