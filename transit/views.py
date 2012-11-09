@@ -161,7 +161,10 @@ def route_map(request):
         -start
         -destination
         -route_points: [{latitude, longitude}]
-        -bus_points: [{latitude, longitude}]
+        -bus_points: [{id, line, latitude, longitude, <opposite_line_info>}]
+        
+    <opposite_line_info> is itself a JSON object containing {id, name} of the
+    opposite line
         
     If no live buses (e.g. it is midnight) return route with empty bus_points
     """
@@ -181,6 +184,8 @@ def route_map(request):
     now = datetime.today()
     hour = now.hour
     minutes = now.minute
+    hour = 14
+    minutes = 20
     now_in_min = hour*60+minutes
     
     buses = Bus.objects.filter(line=line)
@@ -193,7 +198,13 @@ def route_map(request):
             # if the last arrival for this bus has already passed, do not show
             continue
         
-        bus_locations.append(bus.json())
+        json_to_ready = bus.json()
+        if bus.line.opposite_line:
+            json_to_ready["opposite_line_info"] = bus.line.opposite_line.json()
+        else:
+            json_to_ready["opposite_line_info"] = ""
+        bus_locations.append(json_to_ready)
+        
         
     # TODO - we also don't show bus if first_arrival hasn't happned yet!!!!
         
