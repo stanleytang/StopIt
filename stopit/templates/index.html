@@ -29,7 +29,9 @@
     var stopSearchMapModule;
     $(document).bind("pageshow", function(event, data) {
       stopSearchMapModule = new MapModule("stop_search_map_canvas");
-      google.maps.event.trigger(stopSearchMapModule.map, 'resize');
+      if (stopSearchMapModule.map) {
+        google.maps.event.trigger(stopSearchMapModule.map, 'resize');
+      }
     });
   </script>
 </div>

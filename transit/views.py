@@ -130,6 +130,7 @@ def route(request):
     Return (template objects):
         -route: {id, name, destination}
         -stops: [{id, name}]
+        -opposite_route: {id, name, destination}
     """
     route_id = request.GET['id']
     line = Line.objects.get(pk=route_id)
@@ -144,10 +145,22 @@ def route(request):
         stops.append(stop)
     
     dest = line.destination()
-    line = line.json()
-    line["destination"] = dest.name
-    return render(request, "route.html",
-        {"stops": stops, "route": line})
+    json_for_line = line.json()
+    json_for_line["destination"] = dest.name
+    
+    opposite_route_info = {}
+    if line.opposite_line:
+        opposite_route_info = line.opposite_line.json()
+        opposite_route_info["destination"] = \
+            line.opposite_line.destination().name
+        
+    print opposite_route_info
+    
+    return render(request, "route.html", {
+        "stops": stops,
+        "route": json_for_line,
+        "opposite_route": opposite_route_info
+    })
         
 def route_map(request):
     """
@@ -161,10 +174,7 @@ def route_map(request):
         -start
         -destination
         -route_points: [{latitude, longitude}]
-        -bus_points: [{id, line, latitude, longitude, <opposite_line_info>}]
-        
-    <opposite_line_info> is itself a JSON object containing {id, name} of the
-    opposite line
+        -buses: [{id, name, latitude, longitude}]
         
     If no live buses (e.g. it is midnight) return route with empty bus_points
     """
@@ -198,12 +208,7 @@ def route_map(request):
             # if the last arrival for this bus has already passed, do not show
             continue
         
-        json_to_ready = bus.json()
-        if bus.line.opposite_line:
-            json_to_ready["opposite_line_info"] = bus.line.opposite_line.json()
-        else:
-            json_to_ready["opposite_line_info"] = ""
-        bus_locations.append(json_to_ready)
+        bus_locations.append(bus.json())        
         
         
     # TODO - we also don't show bus if first_arrival hasn't happned yet!!!!
@@ -217,11 +222,11 @@ def route_map(request):
     #     {"latitude": 37.4311, "longitude": -122.1778}, # Med school
     #     {"latitude": 37.4419, "longitude": -122.1649}, # Palo Alto (destination)
     # ]
-    
+        
     return render(request, "route_map.html", {
         "route": route,
         "start": line.start().name,
         "destination": line.destination().name,
         "route_points": stops,
-        "bus_points": bus_locations
+        "buses": bus_locations
     })

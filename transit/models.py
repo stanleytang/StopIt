@@ -20,9 +20,10 @@ class Bus(models.Model):
     def json(self):
         return {
             "id": self.id,
-            "line": self.line.name,
+            "name": self.line.name,
             "latitude": str(self.latitude),
-            "longitude": str(self.longitude)
+            "longitude": str(self.longitude),
+            "delay": self.delay
         }
     
     class Meta:

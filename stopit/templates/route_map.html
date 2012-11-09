@@ -16,7 +16,7 @@
     <a href="#" onclick="$('#live_bus_popup_instruction').remove();"
       data-role="button" data-theme="a" data-icon="delete"
       data-iconpos="notext" class="ui-btn-right">Close</a>
-  	  {% if bus_points %}
+  	  {% if buses %}
   	  <p>Live map of where buses are for <b>{{ route.name }}</b><p>
   	  {% else %}
   	  <p>No buses running for <b>{{ route.name }}</b><p> 
@@ -28,17 +28,22 @@
     $(document).bind("pageshow", function(event, data) {
       var noFooter = true;
       liveRouteMapModule = new MapModule("live_route_map_canvas", noFooter);
-      google.maps.event.trigger(liveRouteMapModule.map, 'resize');
-      
+      if (liveRouteMapModule.map) {
+        google.maps.event.trigger(liveRouteMapModule.map, 'resize');
+      }
+            
       var buses = [];
-      {% for latLong in bus_points %}
-      buses.push({
-        location: new google.maps.LatLng(
-          {{ latLong.latitude }}, 
-          {{ latLong.longitude }}
-        )
-      });
-      {% endfor %}
+      {% for bus in buses %}
+       buses.push({
+         location: new google.maps.LatLng(
+           {{ bus.latitude }}, 
+           {{ bus.longitude }}
+         ),
+         name: "{{ bus.name }}",
+         id: {{ bus.id }},
+         delay: {{ bus.delay }}
+       });
+       {% endfor %}
       
       var waypoints = [];
       {% for latLong in route_points %}

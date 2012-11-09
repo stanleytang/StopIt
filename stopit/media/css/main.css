@@ -9,7 +9,9 @@
 .blue-text {
 	color: blue;
 }
-
+.word-wrap {
+	white-space: normal;
+}
 /* -------------
    Stop page
    ------------- */
@@ -36,14 +38,15 @@
   margin: 0px;
 }
 
-#stop_page .ui-block-a {
-	width: 55%;
+#stop_page .ui-block-a { width: 55%; }
+#stop_page .ui-block-b { width: 25%; }
+#stop_page .ui-block-c { width: 20%; }
+#route_page .ui-block-a {
+	width: 55%; 
 }
-
-#stop_page .ui-block-b {
-	width: 25%;
+#route_page .ui-block-b { 
+	width: 45%; 
 }
-
-#stop_page .ui-block-c {
-	width: 20%;
+#route_page .ui-page .ui-content .ui-listview .ui-li-desc {
+    white-space : normal;
 }
