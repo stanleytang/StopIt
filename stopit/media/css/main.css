@@ -55,6 +55,7 @@
 }
 #route_page #opposite_route { 
 	width: 45%; 
+	padding-left: 5px;
 }
 #route_page .opposite_route_button span {
   white-space: normal;
