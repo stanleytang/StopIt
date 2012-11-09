@@ -2,6 +2,8 @@ function MapModule(id, noFooter) {
   this.markersArray = [];
   
   this.mapCanvas = document.getElementById(id);
+  debugger;
+  if (!this.mapCanvas) return;
   this.map = new google.maps.Map(
     this.mapCanvas,
     {

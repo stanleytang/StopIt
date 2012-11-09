@@ -28,7 +28,9 @@
     $(document).bind("pageshow", function(event, data) {
       var noFooter = true;
       liveRouteMapModule = new MapModule("live_route_map_canvas", noFooter);
-      google.maps.event.trigger(liveRouteMapModule.map, 'resize');
+      if (liveRouteMapModule.map) {
+        google.maps.event.trigger(liveRouteMapModule.map, 'resize');
+      }
       
       var buses = [];
       {% for latLong in bus_points %}
