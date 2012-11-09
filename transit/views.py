@@ -208,8 +208,7 @@ def route_map(request):
             # if the last arrival for this bus has already passed, do not show
             continue
         
-        bus_locations.append(bus.json())
-        
+        bus_locations.append(bus.json())        
         
         
     # TODO - we also don't show bus if first_arrival hasn't happned yet!!!!
@@ -223,7 +222,7 @@ def route_map(request):
     #     {"latitude": 37.4311, "longitude": -122.1778}, # Med school
     #     {"latitude": 37.4419, "longitude": -122.1649}, # Palo Alto (destination)
     # ]
-    
+        
     return render(request, "route_map.html", {
         "route": route,
         "start": line.start().name,

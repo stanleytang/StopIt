@@ -22,7 +22,8 @@ class Bus(models.Model):
             "id": self.id,
             "name": self.line.name,
             "latitude": str(self.latitude),
-            "longitude": str(self.longitude)
+            "longitude": str(self.longitude),
+            "delay": self.delay
         }
     
     class Meta:
