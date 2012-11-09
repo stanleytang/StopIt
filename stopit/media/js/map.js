@@ -17,6 +17,8 @@ function MapModule(id, noFooter) {
     }
   );
   
+  this.infoWindow = new google.maps.InfoWindow();
+  
   this.buildMap(noFooter);
   this.trackUserLocation(noFooter);
 }
@@ -195,12 +197,13 @@ MapModule.prototype.displayStopsOnMap = function(stopsInfoArray) {
 
     this.markersArray.push(stopMarker);
     
+    var obj = this;
+    
     // Create popup window
-    var stopInfoWindow = new google.maps.InfoWindow();
     google.maps.event.addListener(stopMarker, 'click', function() {
       var content = "<a href='/stop/?id=" + this.id + "'>" + this.title + "</a>";
-      stopInfoWindow.setContent(content);
-      stopInfoWindow.open(this.map, this);
+      obj.infoWindow.setContent(content);
+      obj.infoWindow.open(this.map, this);
     });
   }
 }
@@ -247,6 +250,8 @@ MapModule.prototype.displayRouteOnMap = function(waypoints, startName, destinati
     }
   });
   
+  var obj = this;
+  
   // Add start marker
   var startMarker = new google.maps.Marker({
     position: origin,
@@ -254,17 +259,14 @@ MapModule.prototype.displayRouteOnMap = function(waypoints, startName, destinati
     title: startName
   });
   
-  var startInfoWindow = new google.maps.InfoWindow();
   google.maps.event.addListener(startMarker, 'click', function() {
     if (startName == destinationName) {
       var content = "<b>Start/Destination:</b> " + startName;
-      startInfoWindow.setContent(content);
-      startInfoWindow.open(this.map, this);
     } else {
       var content = "<b>Start:</b> " + startName;
-      startInfoWindow.setContent(content);
-      startInfoWindow.open(this.map, this);
     }
+    obj.infoWindow.setContent(content);
+    obj.infoWindow.open(this.map, this);
   });
   
   if (startName === destinationName) return;
@@ -275,12 +277,11 @@ MapModule.prototype.displayRouteOnMap = function(waypoints, startName, destinati
     map: this.map,
     title: destinationName
   });
-  
-  var destinationInfoWindow = new google.maps.InfoWindow();
+    
   google.maps.event.addListener(destinationMarker, 'click', function() {
     var content = "<b>Destination:</b> " + destinationName;
-    destinationInfoWindow.setContent(content);
-    destinationInfoWindow.open(this.map, this);  
+    obj.infoWindow.setContent(content);
+    obj.infoWindow.open(this.map, this);  
   });
 }
 
@@ -292,7 +293,7 @@ MapModule.prototype.displayBusesOnMap = function(buses) {
 		new google.maps.Point( 9, 9 ), // anchor (move to center of marker)
 		new google.maps.Size( 19, 19 ) // scaled size (for Retina display icon)
 	);
-  
+    
   for (var i = 0; i < buses.length; i++) {
     var location = buses[i].location;
     
@@ -317,14 +318,14 @@ MapModule.prototype.displayBusesOnMap = function(buses) {
       delayText: delayText
     });
     
+    var obj = this;
+    
     // Create popup window
-    var busInfoWindow = new google.maps.InfoWindow();
     google.maps.event.addListener(busMarker, 'click', function() {
       var content = "<b>" + this.busName + "</b><br />" + this.delayText;
-      busInfoWindow.setContent(content);
-      busInfoWindow.open(this.map, this);
-    });
-    
+      obj.infoWindow.setContent(content);
+      obj.infoWindow.open(this.map, this);
+    });   
   }
 }
 
