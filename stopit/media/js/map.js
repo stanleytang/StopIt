@@ -137,7 +137,9 @@ MapModule.prototype.trackUserLocation = function(noFooter) {
   		});
 		
   		// Center map view
-  		if (!noFooter) obj.map.setCenter(myLatLng);
+  		if (!noFooter) {
+  		  obj.map.setCenter(myLatLng);
+		  }
 	
   	// Just change marker position on subsequent passes
   	} else {
