@@ -10,25 +10,27 @@
 	</div>
   
   <div data-role="content">
-		<h3 style="padding: 0px; margin: 0px">{{ route.name }}</h3>
-		
-		<div class="ui-grid-a">
-			<div class="ui-block-a">
-				<p><strong>To:</strong> {{ route.destination }}</p>
-			</div>
-			<div class="ui-block-b">
-			{% if opposite_route %}
-				<a href="/route/?id={{ opposite_route.id }}" data-role="button" 
-					class="word-wrap">
-					Show Opposite Direction
-				</a>
-			{% else %}
-				<a href="#" data-role="button" class="ui-disabled" class="word-wrap">
-					No Opposite Line
-				</a>
-			{% endif %}
-			</div>
-		</div>
+    <table id="route_info">
+      <tr>
+        <td id="route_name">
+		      <h3>{{ route.name }}</h3>
+    			<p><strong>To:</strong> {{ route.destination }}</p>
+    		</td>
+    		<td id="opposite_direction">
+  		    {% if opposite_route %}
+    			<a href="/route/?id={{ opposite_route.id }}" data-role="button" 
+    				class="opposite_route_button">
+    				Opposite Direction
+    			</a>
+    		  {% else %}
+    			<a href="#" data-role="button" class="ui-disabled" 
+    			  class="opposite_route_button">
+    				No Opposite Line
+    			</a>
+    		  {% endif %}
+			  </td>
+			</tr>
+		</table>
 		
 		<br />
 		

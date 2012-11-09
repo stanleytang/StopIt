@@ -9,9 +9,7 @@
 .blue-text {
 	color: blue;
 }
-.word-wrap {
-	white-space: normal;
-}
+
 /* -------------
    Stop page
    ------------- */
@@ -41,12 +39,23 @@
 #stop_page .ui-block-a { width: 55%; }
 #stop_page .ui-block-b { width: 25%; }
 #stop_page .ui-block-c { width: 20%; }
-#route_page .ui-block-a {
+
+/* ------------
+   Route page
+   ------------ */
+
+#route_page #route_info {
+  width: 100%; 
+}
+#route_page #route_info h3, p {
+  margin: 0px;
+}
+#route_page #route_name {
 	width: 55%; 
 }
-#route_page .ui-block-b { 
+#route_page #opposite_route { 
 	width: 45%; 
 }
-#route_page .ui-page .ui-content .ui-listview .ui-li-desc {
-    white-space : normal;
+#route_page .opposite_route_button span {
+  white-space: normal;
 }
