@@ -51,10 +51,10 @@
   margin: 0px;
 }
 #route_page #route_name {
-	width: 55%; 
+	width: 75%; 
 }
-#route_page #opposite_route { 
-	width: 45%; 
+#route_page #opposite_direction { 
+	width: 25%; 
 	padding-left: 5px;
 }
 #route_page .opposite_route_button span {
