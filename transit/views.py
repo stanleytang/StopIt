@@ -198,10 +198,10 @@ def route_map(request):
         
         json_to_ready = bus.json()
         if bus.line.opposite_line:
-            bus["opposite_line_info"] = bus.line.opposite_line.json()
+            json_to_ready["opposite_line_info"] = bus.line.opposite_line.json()
         else:
-            bus["opposite_line_info"] = ""
-        bus_locations.append(bus.json())
+            json_to_ready["opposite_line_info"] = ""
+        bus_locations.append(json_to_ready)
         
         
     # TODO - we also don't show bus if first_arrival hasn't happned yet!!!!
