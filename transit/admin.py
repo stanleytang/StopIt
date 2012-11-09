@@ -1,7 +1,19 @@
 from django.contrib import admin
 from transit.models import Bus, Line, LineStopLink, Stop
 
-admin.site.register(Bus)
-admin.site.register(Line)
-admin.site.register(LineStopLink)
-admin.site.register(Stop)
+class BusAdmin(admin.ModelAdmin):
+    list_display = ('__unicode__','line','arrival_times',)
+
+class LineAdmin(admin.ModelAdmin):
+    list_display = ('name',)
+
+class LineStopLinkAdmin(admin.ModelAdmin):
+    list_display = ('line', 'stop', 'index')
+
+class StopAdmin(admin.ModelAdmin):
+    list_display = ('name',)
+
+admin.site.register(Bus, BusAdmin)
+admin.site.register(Line, LineAdmin)
+admin.site.register(LineStopLink, LineStopLinkAdmin)
+admin.site.register(Stop, StopAdmin)

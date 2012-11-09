@@ -14,8 +14,8 @@ class Bus(models.Model):
     delay = models.IntegerField(default=0) # measured in minutes
     
     def __unicode__(self):
-        return '%s (%s): %s' %(self.line.name, str(self.delay),
-            self.arrival_times)
+        return '%s: %s (%s)' %(self.line.name, self.arrival_times, 
+            str(self.delay))
     
     def json(self):
         return {
