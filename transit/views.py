@@ -184,6 +184,8 @@ def route_map(request):
     now = datetime.today()
     hour = now.hour
     minutes = now.minute
+    hour = 14
+    minutes = 20
     now_in_min = hour*60+minutes
     
     buses = Bus.objects.filter(line=line)
