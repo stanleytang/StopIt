@@ -11,11 +11,27 @@
   
   <div data-role="content">
 		<h3 style="padding: 0px; margin: 0px">{{ route.name }}</h3>
-		<p><strong>From:</strong> Origin </p>
-		<p><strong>To:</strong> {{ route.destination }}</p>
-		<a href="#" data-role="button">Show Opposite Direction</a>
+		
+		<div class="ui-grid-a">
+			<div class="ui-block-a">
+				<p><strong>To:</strong> {{ route.destination }}</p>
+			</div>
+			<div class="ui-block-b">
+			{% if opposite_route %}
+				<a href="/route/?id={{ opposite_route.id }}" data-role="button" 
+					class="word-wrap">
+					Show Opposite Direction
+				</a>
+			{% else %}
+				<a href="#" data-role="button" class="ui-disabled" class="word-wrap">
+					No Opposite Line
+				</a>
+			{% endif %}
+			</div>
+		</div>
 		
 		<br />
+		
 		<ul data-role="listview">
 			<li data-role="list-divider">
 				Stop Location
