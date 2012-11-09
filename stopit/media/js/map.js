@@ -17,7 +17,7 @@ function MapModule(id, noFooter) {
   );
   
   this.buildMap(noFooter);
-  this.trackUserLocation();
+  this.trackUserLocation(noFooter);
 }
 
 MapModule.prototype.fetchAndShowStopsInArea = function() {
@@ -103,7 +103,7 @@ MapModule.prototype.buildMap = function(noFooter) {
 	this.mapCanvas.style.height = height + 'px';
 }
 
-MapModule.prototype.trackUserLocation = function() {
+MapModule.prototype.trackUserLocation = function(noFooter) {
   var useragent = navigator.userAgent;
   var obj = this;
 	
@@ -137,7 +137,7 @@ MapModule.prototype.trackUserLocation = function() {
   		});
 		
   		// Center map view
-  		obj.map.setCenter(myLatLng);
+  		if (!noFooter) obj.map.setCenter(myLatLng);
 	
   	// Just change marker position on subsequent passes
   	} else {
