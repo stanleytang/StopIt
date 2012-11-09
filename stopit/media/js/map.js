@@ -209,6 +209,7 @@ MapModule.prototype.displayStopsOnMap = function(stopsInfoArray) {
 }
 
 MapModule.prototype.clearStopsOnMap = function() {
+  debugger;
   if (this.markersArray) {
     for (i in this.markersArray) {
       this.markersArray[i].setMap(null);

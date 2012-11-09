@@ -69,7 +69,7 @@ def stop(request):
     minutes = 20
 
     stop = Stop.objects.get(id=stop_id)
-    lines = Line.objects.filter(linestoplink__stop__id=stop.id)
+    lines = Line.objects.filter(linestoplink__stop__id=stop.id).distinct()
     routes = []
     
     for line in lines:
