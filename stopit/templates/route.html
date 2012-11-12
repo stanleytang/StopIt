@@ -36,23 +36,20 @@
 		<div id="left-column">
 			<!-- stops list -->
 			<ul data-role="listview">
-				<li data-role="list-divider">
+				<li data-role="list-divider" id="list-header">
 					Stop Location
 				</li>
 	      {% for stop in stops %}
 		  	<li>
 		  	  <a href="/stop/?id={{ stop.id }}"><span class="word-wrap">
-						{{ stop.name }}</span></a>
+						{{ stop.name }} </span></a>
 		  	</li>
 	    	{% endfor %}
 			</ul>
 		</div>
 			
-		<!-- times table -->
 		<div id="right-column">
-			
-			<!--prev/next buttons -->
-			<fieldset class="ui-grid-a">
+			<div class="ui-grid-a" id="table-buttons">
 				<div class="ui-block-a">
 					<a id="prev-column" href="#" 
 						class="table-nav-button"> < </a>
@@ -61,7 +58,7 @@
 					<a id="next-column" href="#"
 					 class="table-nav-button"> > </a>
 				</div>
-			</fieldset>
+			</div>
 			
 			<div class="table-container">
 				<table id="time-table">
@@ -86,27 +83,33 @@
       </a>
     </div>
   </div>
+	
+	<script>
+	var tableWidth;
+	$(document).ready(function() {
+			sizeTheTables();
+		
+	    $('#next-column').click(function(event) {
+	        event.preventDefault();
+					var scrollAmount = "+=" + tableWidth;
+	        $('.table-container').animate({scrollLeft: scrollAmount}, 'fast');
+	    });
+	    $('#prev-column').click(function(event) {
+	        event.preventDefault();
+					var scrollAmount = "-=" + tableWidth;
+	        $('.table-container').animate({scrollLeft: scrollAmount}, 'fast'); 
+	    });
+	});
+
+	function sizeTheTables() {
+		var numSchedules = 3;
+		var numStops = 2;
+		tableWidth = document.getElementById("right-column").offsetWidth;
+		var tableButtonHeight = document.getElementById("list-header").offsetHeight;
+		$("#table-buttons").height(tableButtonHeight);
+		$("#time-table").width(tableWidth * numSchedules);
+		$("#table-container, #time-table td").width(tableWidth);
+	}
+	</script>
 </div>
-
-<script>
-// $(window).load(sizeTheTables());
-$(document).ready(function() {
-    $('#next-column').click(function(event) {
-        event.preventDefault();
-        $('.table-container').animate({scrollLeft:'+=152'}, 'fast');        
-    });
-    $('#prev-column').click(function(event) {
-        event.preventDefault();
-        $('.table-container').animate({scrollLeft:'-=152'}, 'fast');        
-    });
-});
-
-function sizeTheTables() {
-	var numSchedules = 3;
-	var rightColumn = document.getElementById("right-column");
-	var tableWidth = rightColumn.offsetWidth;
-	$("#time-table").width(tableWidth * numSchedules);
-	$("#time-table td").width(tableWidth);
-}
-</script>
 {% endblock %}

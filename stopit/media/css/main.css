@@ -58,39 +58,37 @@
 #route_page .opposite_route_button span, span.word-wrap {
   white-space: normal;
 }
-#route_page #left-column, #route_page #right-column {
-	margin:0;
-	padding:0;
-}
 #route_page #left-column {
 	width:65%;
 	float:left;
+	margin: 0 0 0 -15px;
 }
 #route_page #right_column {
 	width:35%;
-	float:left;
+	float:right;
+	margin: 0;
 }
 #route_page .table-container {
-    width:456px; /* Total width of visible columns + border widths */
-    height:300px;
-		padding:0;
-		margin:0;
-    background-color:#eee;
-    overflow:hidden;
+	padding:0;
+	margin:0;
+  background-color:#eee;
+  overflow:hidden;
 }
 #route_page table {
-    width:760px; /* Total width of all columns in sliding-window + border widths */
-    height:300px;
-		padding:0;
-		margin:0;
-    overflow:hidden;
+  width:760px; /* Total width of all columns in sliding-window + border widths */
+	padding:0;
+	margin:0;
+	border-spacing:0;
+  overflow:hidden;
+}
+#route_page tr {
+	border-spacing:0;
 }
 #route_page td {
-    float:left;
-    width:150px;
-    background-color:#aaa;
-    border:solid 1px #999;
+	border:0;
+  background-color:#aaa;
 }
 #route_page .ui-listview {
 	width:100%;
+	margin:0;
 }
