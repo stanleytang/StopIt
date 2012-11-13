@@ -126,22 +126,32 @@ def route(request):
     
     Request:
         -id
+        -page_type (1 for original route page, 2 for new testing route page)
         
     Return (template objects):
         -route: {id, name, destination}
-        -stops: [{id, name}]
+        -stops: [{id, name, [times]}]
         -opposite_route: {id, name, destination}
     """
     route_id = request.GET['id']
     line = Line.objects.get(pk=route_id)
     
     links = line.linestoplink_set.order_by('index')
+    buses_for_stop = line.bus_set.order_by('arrival_times')
     
     stops = []
     for link in links:
         stop = link.stop.json()
         del stop['latitude']
         del stop['longitude']
+        stop['times'] = []
+        
+        for bus in buses_for_stop:
+            arrival_time = json.loads(bus.arrival_times)[link.index]
+            hour = int(arrival_time[0:2])
+            minutes = int(arrival_time[3:5])
+            stop['times'].append(get_readable_time(hour, minutes))
+        
         stops.append(stop)
     
     dest = line.destination()
@@ -154,9 +164,13 @@ def route(request):
         opposite_route_info["destination"] = \
             line.opposite_line.destination().name
         
-    print opposite_route_info
+    page_type = int(request.GET['page_type'])
+    if page_type == 1:
+        render_url = "route.html"
+    elif page_type == 2:
+        render_url = "route2.html"
     
-    return render(request, "route.html", {
+    return render(request, render_url, {
         "stops": stops,
         "route": json_for_line,
         "opposite_route": opposite_route_info

@@ -67,9 +67,9 @@
 				<table id="time-table" data-role="table">
 					{% for stop in stops %}
 					<tr class="stop-element">
-						{% for i in "xxx" %}
+						{% for time in stop.times %}
 						<td>
-							3:45 pm
+							{{ time }}
 						</td>
 						{% endfor %}
 					</tr>
