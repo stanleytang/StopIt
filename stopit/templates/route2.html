@@ -1,0 +1,60 @@
+{% extends "base.html" %}
+
+{% block body %}
+<div data-role="page" data-add-back-btn="true" id="route_page">
+  <div data-role="header" data-theme="b">
+	  <h1>StopIt</h1>
+	  <a href="/" data-icon="home" class="ui-btn-right" data-direction="reverse">
+	    Home
+	  </a>
+	</div>
+  
+  <div data-role="content">
+    <table id="route_info">
+      <tr>
+        <td id="route_name">
+		      <h3>{{ route.name }}</h3>
+    			<p><strong>To:</strong> {{ route.destination }}</p>
+    		</td>
+    		<td id="opposite_direction">
+  		    {% if opposite_route %}
+    			<a href="/route/?id={{ opposite_route.id }}" data-role="button" 
+    				class="opposite_route_button">
+    				Opposite Direction
+    			</a>
+    		  {% else %}
+    			<a href="#" data-role="button" class="ui-disabled" 
+    			  class="opposite_route_button">
+    				No Opposite Line
+    			</a>
+    		  {% endif %}
+			  </td>
+			</tr>
+		</table>
+		
+		<br />
+		
+		<ul data-role="listview">
+			<li data-role="list-divider">
+				Stop Location
+			</li>
+      {% for stop in stops %}
+	  	<li>
+	  	  <a href="/stop/?id={{ stop.id }}">{{ stop.name }}</a>
+	  	</li>
+    	{% endfor %}
+		</ul>
+  </div>
+  
+  <!-- todo: show times -->
+  
+  <div data-role="footer" data-position="fixed" data-tap-toggle="false">  
+    <div class="ui-grid-solo">
+      <a href="/route_map/?id={{ route.id }}" data-role="button" 
+        data-inline="false" data-theme="c" data-corners="false">
+        Live Map of Buses
+      </a>
+    </div>
+  </div>
+</div>
+{% endblock %}
