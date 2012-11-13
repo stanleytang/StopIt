@@ -71,11 +71,9 @@
 #route_page .table-container {
 	padding:0;
 	margin:0;
-  background-color:#eee;
   overflow:hidden;
 }
 #route_page table {
-  width:760px; /* Total width of all columns in sliding-window + border widths */
 	padding:0;
 	margin:0;
 	border-spacing:0;
@@ -86,7 +84,16 @@
 }
 #route_page td {
 	border:0;
-  background-color:#aaa;
+}
+#route_page #prev-column, #route_page #next-column {
+	margin: 0;
+	padding: 0;
+}
+#route_page #prev-column .ui-btn-inner, #route_page #next-column .ui-btn-inner {
+	padding-top: 0;
+}
+#route_page #next-column .ui-icon, #route_page #prev-column .ui-icon {
+	top: 5px;
 }
 #route_page .ui-listview {
 	width:100%;

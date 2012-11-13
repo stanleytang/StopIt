@@ -16,7 +16,8 @@
 				<p><strong>To:</strong> {{ route.destination }}</p>
 			</div>
 			<div class="ui-block-b">
-				<a href="#" data-role="button" id="live-map-button">Live Map</a>
+				<a href="/route_map/?id={{ route.id }}" data-role="button" 
+					id="live-map-button">Live Map</a>
 			</div>
 		</fieldset>
 		
@@ -40,7 +41,7 @@
 					Stop Location
 				</li>
 	      {% for stop in stops %}
-		  	<li>
+		  	<li class="stop-element">
 		  	  <a href="/stop/?id={{ stop.id }}"><span class="word-wrap">
 						{{ stop.name }} </span></a>
 		  	</li>
@@ -51,19 +52,21 @@
 		<div id="right-column">
 			<div class="ui-grid-a" id="table-buttons">
 				<div class="ui-block-a">
-					<a id="prev-column" href="#" 
-						class="table-nav-button"> < </a>
+					<a id="prev-column" href="#" data-role="button" data-corners="false"
+						data-iconpos="top" data-icon="arrow-l" data-shadow="false"
+						class="table-nav-button">&nbsp</a>
 				</div>
 				<div class="ui-block-b">
-					<a id="next-column" href="#"
-					 class="table-nav-button"> > </a>
+					<a id="next-column" href="#" data-role="button" data-corners="false"
+						data-iconpos="top" data-icon="arrow-r" data-shadow="false" 
+						class="table-nav-button">&nbsp</a>
 				</div>
 			</div>
 			
 			<div class="table-container">
-				<table id="time-table">
-					{% for i in "xxx" %}
-					<tr>
+				<table id="time-table" data-role="table">
+					{% for stop in stops %}
+					<tr class="stop-element">
 						{% for i in "xxx" %}
 						<td>
 							3:45 pm
@@ -73,15 +76,6 @@
 					{% endfor %}
 				</table>
 			</div>
-  </div>
-	
-  <div data-role="footer" data-position="fixed" data-tap-toggle="false">  
-    <div class="ui-grid-solo">
-      <a href="/route_map/?id={{ route.id }}" data-role="button" 
-        data-inline="false" data-theme="c" data-corners="false">
-        Live Map of Buses
-      </a>
-    </div>
   </div>
 	
 	<script>
@@ -109,7 +103,24 @@
 		$("#table-buttons").height(tableButtonHeight);
 		$("#time-table").width(tableWidth * numSchedules);
 		$("#table-container, #time-table td").width(tableWidth);
+		
+		var listElements = $("li.stop-element");
+		var tableElements = $("tr.stop-element");
+		for (var i = 0; i < listElements.length; i++) {
+			if (i < tableElements.length) {
+				$(tableElements[i]).height($(listElements[i]).height());
+			}
+		}
 	}
 	</script>
+	
+  <div data-role="footer" data-position="fixed" data-tap-toggle="false">  
+    <div class="ui-grid-solo">
+      <a href="/route_map/?id={{ route.id }}" data-role="button" 
+        data-inline="false" data-theme="c" data-corners="false">
+        Live Map of Buses
+      </a>
+    </div>
+  </div>
 </div>
 {% endblock %}
