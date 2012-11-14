@@ -42,7 +42,7 @@
 				</li>
 	      {% for stop in stops %}
 		  	<li class="stop-element">
-		  	  <a href="/stop/?id={{ stop.id }}"><span class="word-wrap">
+		  	  <a href="/stop/?id={{ stop.id }}" data-ajax="false"><span class="word-wrap">
 						{{ stop.name }} </span></a>
 		  	</li>
 	    	{% endfor %}

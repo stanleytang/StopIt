@@ -18,7 +18,7 @@
     		</td>
     		<td id="opposite_direction">
   		    {% if opposite_route %}
-    			<a href="/route/?id={{ opposite_route.id }}" data-role="button" 
+    			<a href="/route/?id={{ opposite_route.id }}" data-role="button"
     				class="opposite_route_button">
     				Opposite Direction
     			</a>
@@ -40,7 +40,7 @@
 			</li>
       {% for stop in stops %}
 	  	<li>
-	  	  <a href="/stop/?id={{ stop.id }}">{{ stop.name }}</a>
+	  	  <a href="/stop/?id={{ stop.id }}" data-ajax="false">{{ stop.name }}</a>
 	  	</li>
     	{% endfor %}
 		</ul>
