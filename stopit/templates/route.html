@@ -80,7 +80,7 @@
 	
 	<script>
 	var tableWidth;
-	$(document).ready(function() {
+	$(document).bind("pageshow", function() {
 			sizeTheTables();
 		
 	    $('#next-column').click(function(event) {
