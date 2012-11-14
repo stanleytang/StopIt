@@ -56,8 +56,8 @@
 		<div class="ui-grid-a" id="table-buttons">
 			<div class="ui-block-a">
 				<a id="prev-column" href="#" data-role="button" data-corners="false"
-					data-iconpos="top" data-icon="arrow-l" data-shadow="false"
-					class="table-nav-button">&nbsp</a>
+					data-iconpos="top" data-icon="arrow-l" data-shadow="false" 
+					class="table-nav-button ui-disabled">&nbsp</a>
 			</div>
 			<div class="ui-block-b">
 				<a id="next-column" href="#" data-role="button" data-corners="false"
@@ -84,23 +84,41 @@
 	var tableWidth;
 	$(document).bind("pageshow", function() {
 			sizeTheTables();
+			
+			var index = 1;
+			var numSchedules = {{ numOfStops }};
 		
 	    $('#next-column').click(function(event) {
 	        event.preventDefault();
 					var scrollAmount = "+=" + tableWidth;
 	        $('.table-container').animate({scrollLeft: scrollAmount}, 'fast');
+	        if (index == 1) {
+	          $('#prev-column').removeClass('ui-disabled');
+	        }
+	        index++;
+	        if (index == numSchedules) {
+	          $('#next-column').addClass('ui-disabled');
+	        }
 	    });
 	    $('#prev-column').click(function(event) {
 	        event.preventDefault();
 					var scrollAmount = "-=" + tableWidth;
 	        $('.table-container').animate({scrollLeft: scrollAmount}, 'fast'); 
+	        if (index == numSchedules) {
+	          $('#next-column').removeClass('ui-disabled');
+	        } 
+	        index--;
+	        if (index == 1) {
+	          $('#prev-column').addClass('ui-disabled');
+	        }
 	    });
 	});
 
 	function sizeTheTables() {
 		var numSchedules = {{ numOfStops }};
 		tableWidth = document.getElementById("right-column").offsetWidth;
-		var tableButtonHeight = document.getElementById("list-header").offsetHeight + 2;
+		var tableButtonHeight = 
+		  document.getElementById("list-header").offsetHeight + 2;
 		$("#table-buttons").height(tableButtonHeight);
 		$("#time-table").width(tableWidth * numSchedules);
 		$("#table-container, #time-table td").width(tableWidth);
