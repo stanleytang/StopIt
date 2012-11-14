@@ -98,11 +98,11 @@
 	});
 
 	function sizeTheTables() {
-		var numSchedules = 3;
-		var numStops = 2;
+		var numSchedules = 	{{ stops|last|length }};
 		tableWidth = document.getElementById("right-column").offsetWidth;
 		var tableButtonHeight = document.getElementById("list-header").offsetHeight + 2;
 		$("#table-buttons").height(tableButtonHeight);
+		$("#time-table").width(tableWidth * numSchedules);
 		$("#table-container, #time-table td").width(tableWidth);
 		
 		var listElements = $("li.stop-element");
