@@ -74,6 +74,7 @@
 	margin:0;
 	border-spacing:0;
   overflow:hidden;
+  width: 100%;
 }
 #route_page #time-table tr {
 	border-spacing:0;
