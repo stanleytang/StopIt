@@ -51,39 +51,36 @@
 #route_page #route_name {
 	width: 75%; 
 }
-#route_page #opposite_direction { 
-	width: 25%; 
-	padding-left: 5px;
-}
-#route_page .opposite_route_button span, span.word-wrap {
+#route_page .live-map-button span, span.word-wrap {
   white-space: normal;
 }
 #route_page #left-column {
 	width:65%;
 	float:left;
-	margin: 0 0 0 -15px;
+	margin: 0 0 0 0px;
 }
-#route_page #right_column {
+#route_page #right-column {
 	width:35%;
 	float:right;
-	margin: 0;
+	margin: 0 0 0 0px;
 }
 #route_page .table-container {
 	padding:0;
 	margin:0;
   overflow:hidden;
 }
-#route_page table {
+#route_page #time-table {
 	padding:0;
 	margin:0;
 	border-spacing:0;
   overflow:hidden;
 }
-#route_page tr {
+#route_page #time-table tr {
 	border-spacing:0;
 }
-#route_page td {
+#route_page #time-table td {
 	border:0;
+	text-align: center;
 }
 #route_page #prev-column, #route_page #next-column {
 	margin: 0;
@@ -98,4 +95,26 @@
 #route_page .ui-listview {
 	width:100%;
 	margin:0;
+}
+
+
+/* ------------
+   Route page 2
+   ------------ */
+
+#route_page_2 #route_info {
+  width: 100%; 
+}
+#route_page_2 #route_info h3, p {
+  margin: 0px;
+}
+#route_page_2 #route_name {
+	width: 75%; 
+}
+#route_page_2 #opposite_direction { 
+	width: 25%; 
+	padding-left: 5px;
+}
+#route_page_2 .opposite_route_button span {
+  white-space: normal;
 }

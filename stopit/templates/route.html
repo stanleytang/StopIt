@@ -9,17 +9,19 @@
 	  </a>
 	</div>
   
-  <div data-role="content">
-		<fieldset class="ui-grid-a">
-			<div class="ui-block-a">
-			  <h3>{{ route.name }}</h3>
-				<p><strong>To:</strong> {{ route.destination }}</p>
-			</div>
-			<div class="ui-block-b">
-				<a href="/route_map/?id={{ route.id }}" data-role="button" 
-					id="live-map-button">Live Map</a>
-			</div>
-		</fieldset>
+  <div data-role="content" style="padding-bottom: 0px">
+    <table id="route_info">
+      <tr>
+        <td id="route_name">
+		      <h3>{{ route.name }}</h3>
+    			<p><strong>To:</strong> {{ route.destination }}</p>
+    		</td>
+    		<td id="live-map-button">
+          <a href="/route_map/?id={{ route.id }}" data-role="button" 
+  					id="live-map-button">Live Map</a>
+  			</td>
+			</tr>
+		</table>
 		
 	  {% if opposite_route %}
 		<a href="/route/?id={{ opposite_route.id }}" data-role="button" 
@@ -33,50 +35,50 @@
 		</a>
 	  {% endif %}
 		<br />
-		
-		<div id="left-column">
-			<!-- stops list -->
-			<ul data-role="listview">
-				<li data-role="list-divider" id="list-header">
-					Stop Location
-				</li>
-	      {% for stop in stops %}
-		  	<li class="stop-element">
-		  	  <a href="/stop/?id={{ stop.id }}" data-ajax="false"><span class="word-wrap">
-						{{ stop.name }} </span></a>
-		  	</li>
-	    	{% endfor %}
-			</ul>
-		</div>
-			
-		<div id="right-column">
-			<div class="ui-grid-a" id="table-buttons">
-				<div class="ui-block-a">
-					<a id="prev-column" href="#" data-role="button" data-corners="false"
-						data-iconpos="top" data-icon="arrow-l" data-shadow="false"
-						class="table-nav-button">&nbsp</a>
-				</div>
-				<div class="ui-block-b">
-					<a id="next-column" href="#" data-role="button" data-corners="false"
-						data-iconpos="top" data-icon="arrow-r" data-shadow="false" 
-						class="table-nav-button">&nbsp</a>
-				</div>
-			</div>
-			
-			<div class="table-container">
-				<table id="time-table" data-role="table">
-					{% for stop in stops %}
-					<tr class="stop-element">
-						{% for time in stop.times %}
-						<td>
-							{{ time }}
-						</td>
-						{% endfor %}
-					</tr>
-					{% endfor %}
-				</table>
-			</div>
   </div>
+  
+  <div id="left-column">
+		<!-- stops list -->
+		<ul data-role="listview">
+			<li data-role="list-divider" id="list-header">
+				Stop Location
+			</li>
+      {% for stop in stops %}
+	  	<li class="stop-element">
+	  	  <a href="/stop/?id={{ stop.id }}"><span class="word-wrap">
+					{{ stop.name }} </span></a>
+	  	</li>
+    	{% endfor %}
+		</ul>
+	</div>
+		
+	<div id="right-column">
+		<div class="ui-grid-a" id="table-buttons">
+			<div class="ui-block-a">
+				<a id="prev-column" href="#" data-role="button" data-corners="false"
+					data-iconpos="top" data-icon="arrow-l" data-shadow="false"
+					class="table-nav-button">&nbsp</a>
+			</div>
+			<div class="ui-block-b">
+				<a id="next-column" href="#" data-role="button" data-corners="false"
+					data-iconpos="top" data-icon="arrow-r" data-shadow="false" 
+					class="table-nav-button">&nbsp</a>
+			</div>
+		</div>
+		
+		<div class="table-container">
+			<table id="time-table" data-role="table">
+				{% for stop in stops %}
+				<tr class="stop-element">
+					{% for time in stop.times %}
+					<td>
+						{{ time }}
+					</td>
+					{% endfor %}
+				</tr>
+				{% endfor %}
+			</table>
+		</div>
 	
 	<script>
 	var tableWidth;
@@ -99,7 +101,7 @@
 		var numSchedules = 3;
 		var numStops = 2;
 		tableWidth = document.getElementById("right-column").offsetWidth;
-		var tableButtonHeight = document.getElementById("list-header").offsetHeight;
+		var tableButtonHeight = document.getElementById("list-header").offsetHeight + 2;
 		$("#table-buttons").height(tableButtonHeight);
 		$("#time-table").width(tableWidth * numSchedules);
 		$("#table-container, #time-table td").width(tableWidth);
