@@ -131,6 +131,7 @@ def route(request):
     Return (template objects):
         -route: {id, name, destination}
         -stops: [{id, name, [times]}]
+        -numOfStops
         -opposite_route: {id, name, destination}
     """
     route_id = request.GET['id']
@@ -173,7 +174,8 @@ def route(request):
     return render(request, render_url, {
         "stops": stops,
         "route": json_for_line,
-        "opposite_route": opposite_route_info
+        "opposite_route": opposite_route_info,
+        "numOfStops": len(stops[0]['times'])
     })
         
 def route_map(request):

@@ -98,7 +98,7 @@
 	});
 
 	function sizeTheTables() {
-		var numSchedules = 	{{ stops|last|length }};
+		var numSchedules = {{ numOfStops }};
 		tableWidth = document.getElementById("right-column").offsetWidth;
 		var tableButtonHeight = document.getElementById("list-header").offsetHeight + 2;
 		$("#table-buttons").height(tableButtonHeight);
