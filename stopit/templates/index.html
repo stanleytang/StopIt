@@ -1,9 +1,10 @@
 {% extends "base.html" %}
 
 {% block body %}
+<span id="dummy"></span>
 <div data-role="page" id="homepage">
-  <div data-role="header" data-theme="b">
-	  <h1>StopIt</h1>
+  <div onclick="easterEgg()" data-role="header" data-theme="b">
+		<h1>StopIt</h1>
 	</div>
 	
   <div class="map_canvas" id="stop_search_map_canvas"></div>
