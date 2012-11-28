@@ -37,15 +37,17 @@ MapModule.prototype.fetchAndShowStopsInArea = function() {
     $("#stop_search_text").text("Redo Search In This Area");
   }
   
+  debugger;
+  
   var bounds = this.map.getBounds();
   var swBounds = bounds.getSouthWest();
   var neBounds = bounds.getNorthEast();
   
-  var lat1 = swBounds.Ya;
-  var lon1 = swBounds.Za;
+  var lat1 = swBounds.lat();
+  var lon1 = swBounds.lng();
   
-  var lat2 = neBounds.Ya;
-  var lon2 = neBounds.Za; 
+  var lat2 = neBounds.lat();
+  var lon2 = neBounds.lng();
 
   var request = $.ajax({
     url: "/stop_map_search/?lat1=" + lat1 +"&lon1=" + lon1 + "&lat2=" + lat2 +
@@ -209,7 +211,6 @@ MapModule.prototype.displayStopsOnMap = function(stopsInfoArray) {
 }
 
 MapModule.prototype.clearStopsOnMap = function() {
-  debugger;
   if (this.markersArray) {
     for (i in this.markersArray) {
       this.markersArray[i].setMap(null);
