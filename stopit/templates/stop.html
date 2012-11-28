@@ -26,10 +26,7 @@
   					Route Name
   				</div>
   				<div class="ui-block-b">
-  					Arrives
-  				</div>
-  				<div class="ui-block-c">
-  					Status
+  					Arrives In
   				</div>
 				</fieldset>
       </li>
@@ -43,12 +40,12 @@
   						<p>To: {{ route.destination }}</p>
   					</div>
   					<div class="ui-block-b">
-  						<h3>{{ route.arrives_in }}</h3>
-  						<p>Minutes</p>
-  					</div>
-  					<div class="ui-block-c">
-  						<h3 class="delay-heading">{{ route.delay_length }}</h3>
+  						<h3>
+  						  {{ route.arrives_in }} 
+  						  <span style="font-weight: normal; font-size:13px">mins</span>
+  						</h3>
   						<p class="delay-subheading"></p>
+  						<h3 class="delay-heading">{{ route.delay_length }}</h3>
   					</div>
   				</div>
 				</a>
@@ -96,18 +93,19 @@
 		var delay_subheadings = $(".delay-subheading");
 		for (var i = 0; i < delay_time_elems.length; i++) {
 			var elem = delay_time_elems[i];
+			var subelem = delay_subheadings[i];
 			var subheading = delay_subheadings[i];
 			var delay_time = elem.outerText/1;
 			var time_color, delay_status_text;
 			if (delay_time > 0) {
-				$(elem).addClass("red-text");
+				$(subelem).addClass("red-text");
 				$(elem).append(" min");
 				$(subheading).text("Late");
 			} else if (delay_time == 0) {
-				$(elem).addClass("black-text");
+				$(subelem).addClass("black-text");
 				$(elem).text("On Time");
 			} else if (delay_time < 0) {
-				$(elem).addClass("blue-text");
+				$(subelem).addClass("blue-text");
 				$(elem).text(Math.abs(delay_time) + " min");
 				$(subheading).text("Early");
 			}
