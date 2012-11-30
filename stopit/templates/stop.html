@@ -94,20 +94,19 @@
 		for (var i = 0; i < delay_time_elems.length; i++) {
 			var elem = delay_time_elems[i];
 			var subelem = delay_subheadings[i];
-			var subheading = delay_subheadings[i];
 			var delay_time = elem.outerText/1;
 			var time_color, delay_status_text;
 			if (delay_time > 0) {
 				$(subelem).addClass("red-text");
 				$(elem).append(" min");
-				$(subheading).text("Late");
+				$(subelem).text("Late");
 			} else if (delay_time == 0) {
 				$(subelem).addClass("black-text");
-				$(elem).text("On Time");
+				$(subelem).text("On Time");
 			} else if (delay_time < 0) {
 				$(subelem).addClass("blue-text");
 				$(elem).text(Math.abs(delay_time) + " min");
-				$(subheading).text("Early");
+				$(subelem).text("Early");
 			}
 		}
     
