@@ -201,7 +201,8 @@ MapModule.prototype.displayStopsOnMap = function(stopsInfoArray) {
     
     // Create popup window
     google.maps.event.addListener(stopMarker, 'click', function() {
-      var content = "<a href='/stop/?id=" + this.id + "'>" + this.title + "</a>";
+      var content = "<a class='gmap_popup' href='/stop/?id=" + 
+				this.id + "'>" + this.title + "</a>";
       obj.infoWindow.setContent(content);
       obj.infoWindow.open(this.map, this);
     });

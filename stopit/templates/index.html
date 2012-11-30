@@ -9,31 +9,55 @@
 	
   <div class="map_canvas" id="stop_search_map_canvas"></div>
   
-  <div class="ui-content ui-popup ui-overlay-shadow ui-corner-all ui-body-e" 
-    id="stop_search_popup_instruction" data-theme="e">
-    <a href="#" onclick="$('#stop_search_popup_instruction').remove();"
-      data-role="button" data-theme="a" data-icon="delete"
-      data-iconpos="notext" class="ui-btn-right">Close</a>
+  <div class="ui-content ui-popup ui-overlay-shadow ui-corner-all ui-body-c" 
+    id="stop_search_popup_instruction" data-theme="a">
   	<p>Drag the map and tap below to search for transit stops in this region.<p>
-  </div>
+    <a href="#" onclick="removePopupInstructions(false)" data-role="button"
+		 	data-theme="b" class="ui-btn-right">Got it</a>
+	</div>
   
   <div data-role="footer" data-position="fixed" data-tap-toggle="false">  
     <div class="ui-grid-solo">
       <a href="#" data-role="button" data-inline="false" data-theme="c" 
-        data-corners="false" onclick="stopSearchMapModule.fetchAndShowStopsInArea();">
-        <span id="stop_search_text">Search Transit Stops In This Area</span>
+        data-corners="false" 
+				onclick="stopSearchMapModule.fetchAndShowStopsInArea();">
+      	<span id="stop_search_text">Search Transit Stops In This Area</span>
       </a>
     </div>
   </div>
   
   <script type="text/javascript">
     var stopSearchMapModule;
+		var popupIsOpen = true;
+		
     $(document).bind("pageshow", function(event, data) {
       stopSearchMapModule = new MapModule("stop_search_map_canvas");
       if (stopSearchMapModule.map) {
         google.maps.event.trigger(stopSearchMapModule.map, 'resize');
       }
-    });
+			
+			if (popupIsOpen == false)
+				removePopupInstructions(false);
+		});
+			
+		//Remove any popup windows if the user taps on the map
+		$(document).click(function() { 
+				removePopupInstructions(true);
+		});
+			
+		function removePopupInstructions(showAnimation) {
+			if (popupIsOpen) {
+				var popupWindow = $('#stop_search_popup_instruction');
+				if (showAnimation) {
+					popupWindow.fadeOut(500, function() {
+						popupWindow.remove();
+					})
+				} else {
+					$('#stop_search_popup_instruction').remove();
+				}
+				popupIsOpen = false;
+			}
+		}
   </script>
 </div>
 {% endblock %}

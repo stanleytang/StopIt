@@ -8,6 +8,13 @@
 	color: blue;
 }
 
+/* Main Page */
+a.gmap_popup:link, a.gmap_popup:visited,
+a.gmap_popup:hover, a.gmap_popup:active {
+	text-decoration:none;
+	color:#2489ce;
+}
+
 /* -------------
    Stop page
    ------------- */
