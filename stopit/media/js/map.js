@@ -37,8 +37,6 @@ MapModule.prototype.fetchAndShowStopsInArea = function() {
     $("#stop_search_text").text("Redo Search In This Area");
   }
   
-  debugger;
-  
   var bounds = this.map.getBounds();
   var swBounds = bounds.getSouthWest();
   var neBounds = bounds.getNorthEast();

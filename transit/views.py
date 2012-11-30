@@ -165,7 +165,7 @@ def route(request):
         opposite_route_info["destination"] = \
             line.opposite_line.destination().name
         
-    page_type = int(request.GET.get('page_type', 2))
+    page_type = int(request.GET.get('page_type', 1))
     if page_type == 1:
         render_url = "route.html"
     elif page_type == 2:
