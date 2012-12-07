@@ -90,7 +90,7 @@
 			var index = 1;
 			var numSchedules = {{ numOfStops }};
 		
-	    $('#next-column').click(function(event) {
+	    $('#next-column').tap(function(event) {
 	        event.preventDefault();
 					var scrollAmount = "+=" + tableWidth;
 	        $('.table-container').animate({scrollLeft: scrollAmount}, 'fast');
@@ -102,9 +102,10 @@
 	          $('#next-column').addClass('ui-disabled');
 	        }
 	    });
-	    $('#prev-column').click(function(event) {
+	    $('#prev-column').tap(function(event) {
 	        event.preventDefault();
 					var scrollAmount = "-=" + tableWidth;
+					
 	        $('.table-container').animate({scrollLeft: scrollAmount}, 'fast'); 
 	        if (index == numSchedules) {
 	          $('#next-column').removeClass('ui-disabled');
