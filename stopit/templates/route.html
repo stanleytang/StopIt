@@ -2,63 +2,6 @@
 
 {% block body %}
 <div data-role="page" id="route_page">	
-  <script>
-	var tableWidth;
-	$(document).bind("pageshow", function() {
-	    console.log('fat');
-			sizeTheTables();
-			
-			var index = 1;
-			var numSchedules = {{ numOfStops }};
-		
-	    $('#next-column').tap(function(event) {
-	        event.preventDefault();
-					var scrollAmount = "+=" + tableWidth;
-	        $('.table-container').animate({scrollLeft: scrollAmount}, 'fast');
-	        if (index == 1) {
-	          $('#prev-column').removeClass('ui-disabled');
-	        }
-	        index++;
-	        if (index == numSchedules) {
-	          $('#next-column').addClass('ui-disabled');
-	        }
-	    });
-	    $('#prev-column').tap(function(event) {
-	        event.preventDefault();
-					var scrollAmount = "-=" + tableWidth;
-					
-	        $('.table-container').animate({scrollLeft: scrollAmount}, 'fast'); 
-	        if (index == numSchedules) {
-	          $('#next-column').removeClass('ui-disabled');
-	        } 
-	        index--;
-	        if (index == 1) {
-	          $('#prev-column').addClass('ui-disabled');
-	        }
-	    });
-	});
-
-	function sizeTheTables() {
-		var numSchedules = {{ numOfStops }};
-		var rightColumn = document.getElementById("right-column");
-		if (!rightColumn) return;
-		tableWidth = rightColumn.offsetWidth;
-		var tableButtonHeight = 
-		  document.getElementById("list-header").offsetHeight + 2;
-		$("#table-buttons").height(tableButtonHeight);
-		$("#time-table").width(tableWidth * numSchedules);
-		$("#table-container, #time-table td").width(tableWidth);
-		
-		var listElements = $("li.stop-element");
-		var tableElements = $("tr.stop-element");
-		for (var i = 0; i < listElements.length; i++) {
-			if (i < tableElements.length) {
-				$(tableElements[i]).height($(listElements[i]).height());
-			}
-		}
-	}
-	</script>
-	
   <div data-role="header" data-theme="b">
     <a href="index.html" data-icon="back" data-rel="back"
       id="route-back-button">Back</a>
@@ -139,5 +82,73 @@
 			</table>
 		</div>
 	
+	<script>
+	var tableWidth;
+	$(document).bind("pageshow", function(eventt) {
+	    if (eventt.currentTarget.URL.toLowerCase().indexOf("route/") == -1) return;
+			sizeTheTables();
+  		
+  		// set the initial state of the time table
+			var index = 1;
+			var numSchedules = {{ numOfStops }};
+			
+			$('.table-container').scrollLeft(0);
+			$('#prev-column').addClass('ui-disabled');
+			if (numSchedules == 1) {
+			  $('#next-column').addClass('ui-disabled');
+			} else {
+			  $('#next-column').removeClass('ui-disabled');
+			}
+		
+		  // set the click handlers for the time table buttons
+	    $('#next-column').off('click').on('click', function(event) {
+					var scrollAmount = "+=" + tableWidth;
+	        $('.table-container').animate({scrollLeft: scrollAmount}, 'fast');
+	        if (index == 1) {
+	          $('#prev-column').removeClass('ui-disabled');
+	        }
+	        index++;
+	        
+	        if (index >= numSchedules) {
+	          $('#next-column').addClass('ui-disabled');
+	          index = numSchedules;
+	        }
+	    });
+	    $('#prev-column').off('click').on('click', function(event) {
+					var scrollAmount = "-=" + tableWidth;
+					
+	        $('.table-container').animate({scrollLeft: scrollAmount}, 'fast'); 
+	        if (index == numSchedules) {
+	          $('#next-column').removeClass('ui-disabled');
+	        }
+	        index--;
+	        if (index <= 1) {
+	          $('#prev-column').addClass('ui-disabled');
+	          index = 1;
+	        }
+	    });
+	});
+
+	function sizeTheTables() {
+		var numSchedules = {{ numOfStops }};
+		var rightColumn = document.getElementById("right-column");
+		if (!rightColumn) return;
+		tableWidth = rightColumn.offsetWidth;
+		var tableButtonHeight = 
+		  document.getElementById("list-header").offsetHeight + 2;
+		$("#table-buttons").height(tableButtonHeight);
+		$("#time-table").width(tableWidth * numSchedules);
+		$("#table-container, #time-table td").width(tableWidth);
+		
+		var listElements = $("li.stop-element");
+		var tableElements = $("tr.stop-element");
+		for (var i = 0; i < listElements.length; i++) {
+			if (i < tableElements.length) {
+				$(tableElements[i]).height($(listElements[i]).height());
+			}
+		}
+		
+	}
+	</script>
 </div>
 {% endblock %}
